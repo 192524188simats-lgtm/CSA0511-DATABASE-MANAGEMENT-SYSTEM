@@ -1,0 +1,318 @@
+mysql>
+mysql> CREATE TABLE LoanObject (
+    ->     LoanID BIGINT NOT NULL,
+    ->     ArtifactID BIGINT NOT NULL,
+    ->     LineNo INT NOT NULL,
+    ->     LoanValue DECIMAL(14,2),
+    ->     DispatchCondition VARCHAR(100),
+    ->     PRIMARY KEY (LoanID, ArtifactID),
+    ->     UNIQUE (LoanID, LineNo),
+    ->     FOREIGN KEY (LoanID) REFERENCES Loan(LoanID),
+    ->     FOREIGN KEY (ArtifactID) REFERENCES Artifact(ArtifactID),
+    ->     CHECK (LineNo > 0),
+    ->     CHECK (LoanValue IS NULL OR LoanValue >= 0)
+    -> );
+Query OK, 0 rows affected (0.354 sec)
+
+mysql>
+mysql> CREATE TABLE Exhibition (
+    ->     ExhibitionID INT PRIMARY KEY,
+    ->     Name VARCHAR(150) NOT NULL,
+    ->     StartDate DATE NOT NULL,
+    ->     EndDate DATE NOT NULL,
+    ->     CHECK (EndDate >= StartDate)
+    -> );
+Query OK, 0 rows affected (0.115 sec)
+
+mysql>
+mysql> CREATE TABLE DisplaySlot (
+    ->     ExhibitionID INT NOT NULL,
+    ->     SlotNo INT NOT NULL,
+    ->     LocationLabel VARCHAR(100),
+    ->     PRIMARY KEY (ExhibitionID, SlotNo),
+    ->     FOREIGN KEY (ExhibitionID) REFERENCES Exhibition(ExhibitionID),
+    ->     CHECK (SlotNo > 0)
+    -> );
+Query OK, 0 rows affected (0.134 sec)
+
+mysql>
+mysql> CREATE TABLE Placement (
+    ->     PlacementID BIGINT PRIMARY KEY,
+    ->     ArtifactID BIGINT NOT NULL,
+    ->     ExhibitionID INT NOT NULL,
+    ->     SlotNo INT NOT NULL,
+    ->     FromDate DATE NOT NULL,
+    ->     ToDate DATE,
+    ->     FOREIGN KEY (ArtifactID) REFERENCES Artifact(ArtifactID),
+    ->     FOREIGN KEY (ExhibitionID, SlotNo)
+    ->         REFERENCES DisplaySlot(ExhibitionID, SlotNo),
+    ->     CHECK (ToDate IS NULL OR ToDate >= FromDate)
+    -> );
+Query OK, 0 rows affected (0.539 sec)
+
+mysql>
+mysql> CREATE TABLE ConditionReport (
+    ->     ReportID BIGINT PRIMARY KEY,
+    ->     LoanID BIGINT NOT NULL,
+    ->     ArtifactID BIGINT NOT NULL,
+    ->     InspectorPersonID BIGINT NOT NULL,
+    ->     InspectedAt DATETIME NOT NULL,
+    ->     ReportType VARCHAR(30) NOT NULL,
+    ->     Notes TEXT,
+    ->     FOREIGN KEY (LoanID, ArtifactID)
+    ->         REFERENCES LoanObject(LoanID, ArtifactID),
+    ->     FOREIGN KEY (InspectorPersonID) REFERENCES Person(PersonID),
+    ->     CHECK (ReportType IN ('DISPATCH', 'IN_DISPLAY', 'RETURN', 'OTHER'))
+    -> );
+Query OK, 0 rows affected (0.306 sec)
+
+mysql>
+mysql> -- Insert sample data
+Query OK, 0 rows affected (0.002 sec)
+
+mysql> INSERT INTO Person (PersonID, GivenName, FamilyName, Email) VALUES
+    -> (1, 'Asha', 'Rao', 'asha@example.test'),
+    -> (2, 'Dev', 'Kumar', 'dev@example.test'),
+    -> (3, 'Mira', 'Sen', 'mira@example.test'),
+    -> (4, 'Noah', 'Das', 'noah@example.test');
+Query OK, 4 rows affected (0.026 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> INSERT INTO LenderRole (PersonID, LenderSince, LenderStatus) VALUES
+    -> (1, '2020-01-01', 'ACTIVE'),
+    -> (2, '2021-02-01', 'ACTIVE');
+Query OK, 2 rows affected (0.026 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> INSERT INTO Employee (PersonID, EmployeeNo, HireDate) VALUES
+    -> (3, 'EMP-003', '2022-01-10'),
+    -> (4, 'EMP-004', '2023-03-15');
+Query OK, 2 rows affected (0.019 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> INSERT INTO Registrar (PersonID, AuthorisationLevel)
+    -> VALUES (3, 'SENIOR');
+Query OK, 1 row affected (0.031 sec)
+
+mysql>
+mysql> INSERT INTO Curator (PersonID, Specialisation)
+    -> VALUES (4, 'Sculpture');
+Query OK, 1 row affected (0.029 sec)
+
+mysql>
+mysql> INSERT INTO CollectionUnit (CollectionUnitID, UnitName)
+    -> VALUES (1, 'South Gallery');
+Query OK, 1 row affected (0.029 sec)
+
+mysql>
+mysql> INSERT INTO CollectionType (CollectionTypeID, TypeName, Description)
+    -> VALUES (1, 'Sculpture', 'Three-dimensional artwork');
+Query OK, 1 row affected (0.028 sec)
+
+mysql>
+mysql> INSERT INTO Artifact
+    ->     (ArtifactID, AccessionNo, Title, CollectionUnitID, CollectionTypeID, ArtifactValue)
+    -> VALUES
+    -> (1, 'MM-0001', 'Bronze Horse', 1, 1, 12000.00),
+    -> (2, 'MM-0002', 'Stone Bird',   1, 1,  8000.00),
+    -> (3, 'MM-0003', 'Clay Vessel',  1, 1,  3000.00),
+    -> (4, 'MM-0004', 'Wood Mask',    1, 1,  2500.00);
+Query OK, 4 rows affected (0.032 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> INSERT INTO Loan
+    ->     (LoanID, LenderPersonID, AgreementNo, StartDate, DueDate, ReturnDate, RegistrarPersonID)
+    -> VALUES
+    -> (1, 1, 'AGR-001', '2026-09-01', '2026-10-01', NULL,         3),
+    -> (2, 2, 'AGR-002', '2026-10-01', '2026-12-01', '2026-10-20', 3);
+Query OK, 2 rows affected (0.046 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> INSERT INTO LoanObject
+    ->     (LoanID, ArtifactID, LineNo, LoanValue, DispatchCondition)
+    -> VALUES
+    -> (1, 1, 1, 12000.00, 'Good'),
+    -> (1, 2, 2,  8000.00, 'Minor wear'),
+    -> (2, 3, 1,  3000.00, 'Good');
+Query OK, 3 rows affected (0.031 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> INSERT INTO ConditionReport
+    ->     (ReportID, LoanID, ArtifactID, InspectorPersonID, InspectedAt, ReportType, Notes)
+    -> VALUES
+    -> (1, 1, 1, 4, '2026-09-01 10:00:00', 'DISPATCH',   'No visible damage'),
+    -> (2, 1, 1, 4, '2026-09-15 11:00:00', 'IN_DISPLAY', 'Stable condition'),
+    -> (3, 1, 2, 4, '2026-09-01 10:30:00', 'DISPATCH',   'Minor wear noted'),
+    -> (4, 2, 3, 4, '2026-10-01 09:00:00', 'DISPATCH',   'No visible damage');
+Query OK, 4 rows affected (0.040 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> INSERT INTO Exhibition (ExhibitionID, Name, StartDate, EndDate)
+    -> VALUES (1, 'Sculpture Through Time', '2026-09-01', '2026-12-31');
+Query OK, 1 row affected (0.038 sec)
+
+mysql>
+mysql> INSERT INTO DisplaySlot (ExhibitionID, SlotNo, LocationLabel) VALUES
+    -> (1, 1, 'Main Hall - A'),
+    -> (1, 2, 'Main Hall - B');
+Query OK, 2 rows affected (0.028 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> INSERT INTO Placement
+    ->     (PlacementID, ArtifactID, ExhibitionID, SlotNo, FromDate, ToDate)
+    -> VALUES
+    -> (1, 1, 1, 1, '2026-09-05', NULL),
+    -> (2, 2, 1, 2, '2026-09-05', '2026-10-15');
+Query OK, 2 rows affected (0.032 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> -- Q1. Open overdue loans as of 2026-11-04
+Query OK, 0 rows affected (0.002 sec)
+
+mysql> SELECT LoanID, AgreementNo, LenderPersonID, DueDate
+    -> FROM Loan
+    -> WHERE ReturnDate IS NULL
+    ->   AND DueDate < '2026-11-04'
+    -> ORDER BY DueDate;
++--------+-------------+----------------+------------+
+| LoanID | AgreementNo | LenderPersonID | DueDate    |
++--------+-------------+----------------+------------+
+|      1 | AGR-001     |              1 | 2026-10-01 |
++--------+-------------+----------------+------------+
+1 row in set (0.024 sec)
+
+mysql>
+mysql> -- Q2. Artifacts without condition evidence
+Query OK, 0 rows affected (0.002 sec)
+
+mysql> SELECT a.ArtifactID, a.AccessionNo, a.Title
+    -> FROM Artifact AS a
+    -> LEFT JOIN ConditionReport AS cr ON cr.ArtifactID = a.ArtifactID
+    -> WHERE cr.ReportID IS NULL
+    -> ORDER BY a.ArtifactID;
++------------+-------------+-----------+
+| ArtifactID | AccessionNo | Title     |
++------------+-------------+-----------+
+|          4 | MM-0004     | Wood Mask |
++------------+-------------+-----------+
+1 row in set (0.014 sec)
+
+mysql>
+mysql> -- Q3. Artifacts included in each loan
+Query OK, 0 rows affected (0.002 sec)
+
+mysql> SELECT l.LoanID, l.AgreementNo, a.ArtifactID, a.Title, lo.LineNo
+    -> FROM Loan AS l
+    -> JOIN LoanObject AS lo ON lo.LoanID = l.LoanID
+    -> JOIN Artifact AS a ON a.ArtifactID = lo.ArtifactID
+    -> ORDER BY l.LoanID, lo.LineNo;
++--------+-------------+------------+--------------+--------+
+| LoanID | AgreementNo | ArtifactID | Title        | LineNo |
++--------+-------------+------------+--------------+--------+
+|      1 | AGR-001     |          1 | Bronze Horse |      1 |
+|      1 | AGR-001     |          2 | Stone Bird   |      2 |
+|      2 | AGR-002     |          3 | Clay Vessel  |      1 |
++--------+-------------+------------+--------------+--------+
+3 rows in set (0.006 sec)
+
+mysql>
+mysql> -- Q4. Loan custody periods and duration as of 2026-11-04
+Query OK, 0 rows affected (0.003 sec)
+
+mysql> SELECT LoanID, StartDate, DueDate, ReturnDate,
+    ->        DATEDIFF(COALESCE(ReturnDate, '2026-11-04'), StartDate) AS CustodyDays
+    -> FROM Loan
+    -> ORDER BY StartDate;
++--------+------------+------------+------------+-------------+
+| LoanID | StartDate  | DueDate    | ReturnDate | CustodyDays |
++--------+------------+------------+------------+-------------+
+|      1 | 2026-09-01 | 2026-10-01 | NULL       |          64 |
+|      2 | 2026-10-01 | 2026-12-01 | 2026-10-20 |          19 |
++--------+------------+------------+------------+-------------+
+2 rows in set (0.021 sec)
+
+mysql>
+mysql> -- Q5. Latest condition report for each artifact
+Query OK, 0 rows affected (0.002 sec)
+
+mysql> SELECT cr.ArtifactID, cr.ReportID, cr.InspectedAt, cr.ReportType, cr.Notes
+    -> FROM ConditionReport AS cr
+    -> JOIN (
+    ->     SELECT ArtifactID, MAX(InspectedAt) AS LatestAt
+    ->     FROM ConditionReport
+    ->     GROUP BY ArtifactID
+    -> ) AS latest
+    ->   ON latest.ArtifactID = cr.ArtifactID
+    ->  AND latest.LatestAt = cr.InspectedAt
+    -> ORDER BY cr.ArtifactID;
++------------+----------+---------------------+------------+-------------------+
+| ArtifactID | ReportID | InspectedAt         | ReportType | Notes             |
++------------+----------+---------------------+------------+-------------------+
+|          1 |        2 | 2026-09-15 11:00:00 | IN_DISPLAY | Stable condition  |
+|          2 |        3 | 2026-09-01 10:30:00 | DISPATCH   | Minor wear noted  |
+|          3 |        4 | 2026-10-01 09:00:00 | DISPATCH   | No visible damage |
++------------+----------+---------------------+------------+-------------------+
+3 rows in set (0.028 sec)
+
+mysql>
+mysql> -- Q6. Loan lines and valuations
+Query OK, 0 rows affected (0.002 sec)
+
+mysql> SELECT LoanID, ArtifactID, LineNo, LoanValue, DispatchCondition
+    -> FROM LoanObject
+    -> ORDER BY LoanID, LineNo;
++--------+------------+--------+-----------+-------------------+
+| LoanID | ArtifactID | LineNo | LoanValue | DispatchCondition |
++--------+------------+--------+-----------+-------------------+
+|      1 |          1 |      1 |  12000.00 | Good              |
+|      1 |          2 |      2 |   8000.00 | Minor wear        |
+|      2 |          3 |      1 |   3000.00 | Good              |
++--------+------------+--------+-----------+-------------------+
+3 rows in set (0.003 sec)
+
+mysql>
+mysql> -- Q7. Exhibition slot placements
+Query OK, 0 rows affected (0.002 sec)
+
+mysql> SELECT e.Name AS Exhibition, p.SlotNo, a.AccessionNo, a.Title,
+    ->        p.FromDate, p.ToDate
+    -> FROM Placement AS p
+    -> JOIN Exhibition AS e ON e.ExhibitionID = p.ExhibitionID
+    -> JOIN Artifact AS a ON a.ArtifactID = p.ArtifactID
+    -> ORDER BY e.ExhibitionID, p.SlotNo;
++------------------------+--------+-------------+--------------+------------+------------+
+| Exhibition             | SlotNo | AccessionNo | Title        | FromDate   | ToDate     |
++------------------------+--------+-------------+--------------+------------+------------+
+| Sculpture Through Time |      1 | MM-0001     | Bronze Horse | 2026-09-05 | NULL       |
+| Sculpture Through Time |      2 | MM-0002     | Stone Bird   | 2026-09-05 | 2026-10-15 |
++------------------------+--------+-------------+--------------+------------+------------+
+2 rows in set (0.006 sec)
+
+mysql>
+mysql> -- Q8. Condition evidence count by artifact
+Query OK, 0 rows affected (0.002 sec)
+
+mysql> SELECT a.ArtifactID, a.AccessionNo, a.Title,
+    ->        COUNT(cr.ReportID) AS ReportCount
+    -> FROM Artifact AS a
+    -> LEFT JOIN ConditionReport AS cr ON cr.ArtifactID = a.ArtifactID
+    -> GROUP BY a.ArtifactID, a.AccessionNo, a.Title
+    -> ORDER BY ReportCount, a.ArtifactID;
++------------+-------------+--------------+-------------+
+| ArtifactID | AccessionNo | Title        | ReportCount |
++------------+-------------+--------------+-------------+
+|          4 | MM-0004     | Wood Mask    |           0 |
+|          2 | MM-0002     | Stone Bird   |           1 |
+|          3 | MM-0003     | Clay Vessel  |           1 |
+|          1 | MM-0001     | Bronze Horse |           2 |
++------------+-------------+--------------+-------------+
+4 rows in set (0.015 sec)
