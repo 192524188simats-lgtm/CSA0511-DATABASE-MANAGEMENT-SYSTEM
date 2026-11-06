@@ -1,0 +1,1444 @@
+mysql> CREATE DATABASE DBMS_LAB;
+Query OK, 1 row affected (0.162 sec)
+
+mysql> USE DBMS_LAB;
+Database changed
+mysql> CREATE TABLE STUDENT (
+    ->     RegNo INT,
+    ->     Name VARCHAR(15),
+    ->     Gender CHAR(1),
+    ->     DOB DATE,
+    ->     MobileNo BIGINT,
+    ->     City VARCHAR(15)
+    -> );
+Query OK, 0 rows affected (0.287 sec)
+
+mysql> CREATE TABLE FACULTY (
+    ->     FacNo VARCHAR(4),
+    ->     FacName VARCHAR(15),
+    ->     Gender CHAR(1),
+    ->     DOB DATE,
+    ->     DOJ DATE,
+    ->     MobileNo BIGINT
+    -> );
+Query OK, 0 rows affected (0.171 sec)
+
+mysql> CREATE TABLE DEPARTMENT (
+    ->     DeptNo VARCHAR(4),
+    ->     DeptName VARCHAR(15),
+    ->     DeptHead VARCHAR(4)
+    -> );
+Query OK, 0 rows affected (0.359 sec)
+
+mysql> CREATE TABLE COURSE (
+    ->     CourseNo VARCHAR(3),
+    ->     CourseDesc VARCHAR(14),
+    ->     CourseType CHAR(1),
+    ->     SemNo CHAR(1),
+    ->     HallNo VARCHAR(4),
+    ->     FacNo VARCHAR(4)
+    -> );
+Query OK, 0 rows affected (0.159 sec)
+
+mysql> ALTER TABLE FACULTY
+    -> ADD Dept VARCHAR(10);
+Query OK, 0 rows affected (0.507 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SHOW TABLES;
++--------------------+
+| Tables_in_dbms_lab |
++--------------------+
+| course             |
+| department         |
+| faculty            |
+| student            |
++--------------------+
+4 rows in set (0.237 sec)
+
+mysql> DESC STUDENT;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| RegNo    | int         | YES  |     | NULL    |       |
+| Name     | varchar(15) | YES  |     | NULL    |       |
+| Gender   | char(1)     | YES  |     | NULL    |       |
+| DOB      | date        | YES  |     | NULL    |       |
+| MobileNo | bigint      | YES  |     | NULL    |       |
+| City     | varchar(15) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+6 rows in set (0.250 sec)
+
+mysql> DESC FACULTY;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| FacNo    | varchar(4)  | YES  |     | NULL    |       |
+| FacName  | varchar(15) | YES  |     | NULL    |       |
+| Gender   | char(1)     | YES  |     | NULL    |       |
+| DOB      | date        | YES  |     | NULL    |       |
+| DOJ      | date        | YES  |     | NULL    |       |
+| MobileNo | bigint      | YES  |     | NULL    |       |
+| Dept     | varchar(10) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+7 rows in set (0.014 sec)
+
+mysql> DESC DEPARTMENT;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| DeptNo   | varchar(4)  | YES  |     | NULL    |       |
+| DeptName | varchar(15) | YES  |     | NULL    |       |
+| DeptHead | varchar(4)  | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+3 rows in set (0.018 sec)
+
+mysql> DESC COURSE;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| CourseNo   | varchar(3)  | YES  |     | NULL    |       |
+| CourseDesc | varchar(14) | YES  |     | NULL    |       |
+| CourseType | char(1)     | YES  |     | NULL    |       |
+| SemNo      | char(1)     | YES  |     | NULL    |       |
+| HallNo     | varchar(4)  | YES  |     | NULL    |       |
+| FacNo      | varchar(4)  | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+6 rows in set (0.019 sec)
+
+mysql> USE DBMS_LAB;
+Database changed
+mysql> CREATE TABLE STUDENT2 (
+    ->     RegNo INT,
+    ->     S1Name VARCHAR(20)
+    -> );
+Query OK, 0 rows affected (0.165 sec)
+
+mysql> CREATE TABLE STUDENT3 (
+    ->     RegNo INT,
+    ->     StudentName VARCHAR(20)
+    -> );
+Query OK, 0 rows affected (0.265 sec)
+
+mysql> ALTER TABLE STUDENT2
+    -> ADD PRIMARY KEY (RegNo);
+Query OK, 0 rows affected (0.418 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE FACULTY
+    -> ADD PRIMARY KEY (FacNo);
+Query OK, 0 rows affected (0.361 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE FACULTY
+    -> ADD CONSTRAINT chk_gender
+    -> CHECK (Gender IN ('M', 'F'));
+Query OK, 0 rows affected (0.619 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE DEPARTMENT
+    -> ADD PRIMARY KEY (DeptNo);
+Query OK, 0 rows affected (0.292 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE COURSE
+    -> ADD PRIMARY KEY (CourseNo);
+Query OK, 0 rows affected (0.329 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE COURSE
+    -> ADD CONSTRAINT chk_semno
+    -> CHECK (SemNo BETWEEN 1 AND 6);
+Query OK, 0 rows affected (0.574 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE STUDENT2
+    -> ADD CONSTRAINT unique_s1name
+    -> UNIQUE (S1Name);
+Query OK, 0 rows affected (0.203 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE STUDENT3
+    -> ADD CONSTRAINT fk_regno
+    -> FOREIGN KEY (RegNo)
+    -> REFERENCES STUDENT2(RegNo);
+Query OK, 0 rows affected (0.589 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC STUDENT2;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| RegNo  | int         | NO   | PRI | NULL    |       |
+| S1Name | varchar(20) | YES  | UNI | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+2 rows in set (0.024 sec)
+
+mysql> DESC STUDENT3;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| RegNo       | int         | YES  | MUL | NULL    |       |
+| StudentName | varchar(20) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+2 rows in set (0.025 sec)
+
+mysql> DESC FACULTY;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| FacNo    | varchar(4)  | NO   | PRI | NULL    |       |
+| FacName  | varchar(15) | YES  |     | NULL    |       |
+| Gender   | char(1)     | YES  |     | NULL    |       |
+| DOB      | date        | YES  |     | NULL    |       |
+| DOJ      | date        | YES  |     | NULL    |       |
+| MobileNo | bigint      | YES  |     | NULL    |       |
+| Dept     | varchar(10) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+7 rows in set (0.016 sec)
+
+mysql> DESC DEPARTMENT;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| DeptNo   | varchar(4)  | NO   | PRI | NULL    |       |
+| DeptName | varchar(15) | YES  |     | NULL    |       |
+| DeptHead | varchar(4)  | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+3 rows in set (0.014 sec)
+
+mysql> DESC COURSE;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| CourseNo   | varchar(3)  | NO   | PRI | NULL    |       |
+| CourseDesc | varchar(14) | YES  |     | NULL    |       |
+| CourseType | char(1)     | YES  |     | NULL    |       |
+| SemNo      | char(1)     | YES  |     | NULL    |       |
+| HallNo     | varchar(4)  | YES  |     | NULL    |       |
+| FacNo      | varchar(4)  | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+6 rows in set (0.014 sec)
+
+mysql> SHOW CREATE TABLE STUDENT2;
++----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table    | Create Table                                                                                                                                                                                                               |
++----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| STUDENT2 | CREATE TABLE `student2` (
+  `RegNo` int NOT NULL,
+  `S1Name` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`RegNo`),
+  UNIQUE KEY `unique_s1name` (`S1Name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.390 sec)
+
+mysql> USE DBMS_LAB;
+Database changed
+mysql> INSERT INTO STUDENT VALUES
+    -> (101, 'Arun', 'M', '2005-04-12', 9876543210, 'Chennai'),
+    -> (102, 'Kavin', 'M', '2005-08-20', 9876543211, 'Salem'),
+    -> (103, 'Priya', 'F', '2006-01-15', 9876543212, 'Madurai');
+Query OK, 3 rows affected (0.430 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO FACULTY
+    -> (FacNo, FacName, Gender, DOB, DOJ, MobileNo, Dept)
+    -> VALUES
+    -> ('F001', 'Mohan', 'M', '1970-05-10', '2000-06-01', 9876543213, 'CSE'),
+    -> ('F002', 'Priya', 'F', '1980-08-15', '2005-07-01', 9876543214, 'IT'),
+    -> ('F003', 'Ravi', 'M', '1975-03-20', '2002-06-10', 9876543215, 'ECE');
+Query OK, 3 rows affected (0.035 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO DEPARTMENT VALUES
+    -> ('D001', 'CSE', 'F001'),
+    -> ('D002', 'IT', 'F002'),
+    -> ('D003', 'ECE', 'F003');
+Query OK, 3 rows affected (0.402 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO COURSE VALUES
+    -> ('C01', 'DBMS', 'T', '4', 'H101', 'F001'),
+    -> ('C02', 'JAVA', 'T', '3', 'H102', 'F002'),
+    -> ('C03', 'NETWORK', 'P', '5', 'H103', 'F003');
+Query OK, 3 rows affected (0.403 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO STUDENT2 VALUES
+    -> (201, 'Ajay'),
+    -> (202, 'Bala'),
+    -> (203, 'Charan');
+Query OK, 3 rows affected (0.400 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM STUDENT;
++-------+-------+--------+------------+------------+---------+
+| RegNo | Name  | Gender | DOB        | MobileNo   | City    |
++-------+-------+--------+------------+------------+---------+
+|   101 | Arun  | M      | 2005-04-12 | 9876543210 | Chennai |
+|   102 | Kavin | M      | 2005-08-20 | 9876543211 | Salem   |
+|   103 | Priya | F      | 2006-01-15 | 9876543212 | Madurai |
++-------+-------+--------+------------+------------+---------+
+3 rows in set (0.005 sec)
+
+mysql> SELECT * FROM FACULTY;
++-------+---------+--------+------------+------------+------------+------+
+| FacNo | FacName | Gender | DOB        | DOJ        | MobileNo   | Dept |
++-------+---------+--------+------------+------------+------------+------+
+| F001  | Mohan   | M      | 1970-05-10 | 2000-06-01 | 9876543213 | CSE  |
+| F002  | Priya   | F      | 1980-08-15 | 2005-07-01 | 9876543214 | IT   |
+| F003  | Ravi    | M      | 1975-03-20 | 2002-06-10 | 9876543215 | ECE  |
++-------+---------+--------+------------+------------+------------+------+
+3 rows in set (0.005 sec)
+
+mysql> SELECT * FROM DEPARTMENT;
++--------+----------+----------+
+| DeptNo | DeptName | DeptHead |
++--------+----------+----------+
+| D001   | CSE      | F001     |
+| D002   | IT       | F002     |
+| D003   | ECE      | F003     |
++--------+----------+----------+
+3 rows in set (0.005 sec)
+
+mysql> SELECT * FROM COURSE;
++----------+------------+------------+-------+--------+-------+
+| CourseNo | CourseDesc | CourseType | SemNo | HallNo | FacNo |
++----------+------------+------------+-------+--------+-------+
+| C01      | DBMS       | T          | 4     | H101   | F001  |
+| C02      | JAVA       | T          | 3     | H102   | F002  |
+| C03      | NETWORK    | P          | 5     | H103   | F003  |
++----------+------------+------------+-------+--------+-------+
+3 rows in set (0.006 sec)
+
+mysql> SELECT * FROM STUDENT2;
++-------+--------+
+| RegNo | S1Name |
++-------+--------+
+|   201 | Ajay   |
+|   202 | Bala   |
+|   203 | Charan |
++-------+--------+
+3 rows in set (0.005 sec)
+
+mysql> ^C
+mysql> USE DBMS_LAB;
+Database changed
+mysql> SELECT * FROM STUDENT;
++-------+-------+--------+------------+------------+---------+
+| RegNo | Name  | Gender | DOB        | MobileNo   | City    |
++-------+-------+--------+------------+------------+---------+
+|   101 | Arun  | M      | 2005-04-12 | 9876543210 | Chennai |
+|   102 | Kavin | M      | 2005-08-20 | 9876543211 | Salem   |
+|   103 | Priya | F      | 2006-01-15 | 9876543212 | Madurai |
++-------+-------+--------+------------+------------+---------+
+3 rows in set (0.005 sec)
+
+mysql> SELECT * FROM FACULTY;
++-------+---------+--------+------------+------------+------------+------+
+| FacNo | FacName | Gender | DOB        | DOJ        | MobileNo   | Dept |
++-------+---------+--------+------------+------------+------------+------+
+| F001  | Mohan   | M      | 1970-05-10 | 2000-06-01 | 9876543213 | CSE  |
+| F002  | Priya   | F      | 1980-08-15 | 2005-07-01 | 9876543214 | IT   |
+| F003  | Ravi    | M      | 1975-03-20 | 2002-06-10 | 9876543215 | ECE  |
++-------+---------+--------+------------+------------+------------+------+
+3 rows in set (0.005 sec)
+
+mysql>
+mysql> SELECT * FROM STUDENT
+    -> WHERE RegNo = 191711342;
+Empty set (0.005 sec)
+
+mysql> SELECT RegNo, Name, DOB
+    -> FROM STUDENT;
++-------+-------+------------+
+| RegNo | Name  | DOB        |
++-------+-------+------------+
+|   101 | Arun  | 2005-04-12 |
+|   102 | Kavin | 2005-08-20 |
+|   103 | Priya | 2006-01-15 |
++-------+-------+------------+
+3 rows in set (0.005 sec)
+
+mysql> SELECT *
+    -> FROM STUDENT
+    -> WHERE Gender = 'F';
++-------+-------+--------+------------+------------+---------+
+| RegNo | Name  | Gender | DOB        | MobileNo   | City    |
++-------+-------+--------+------------+------------+---------+
+|   103 | Priya | F      | 2006-01-15 | 9876543212 | Madurai |
++-------+-------+--------+------------+------------+---------+
+1 row in set (0.004 sec)
+
+mysql> ^C
+mysql> SHOW TABLES;
++--------------------+
+| Tables_in_dbms_lab |
++--------------------+
+| course             |
+| department         |
+| faculty            |
+| student            |
+| student2           |
+| student3           |
++--------------------+
+6 rows in set (0.015 sec)
+
+mysql> SELECT *
+    -> FROM FACULTY
+    -> WHERE DOJ < '2014-11-01';
++-------+---------+--------+------------+------------+------------+------+
+| FacNo | FacName | Gender | DOB        | DOJ        | MobileNo   | Dept |
++-------+---------+--------+------------+------------+------------+------+
+| F001  | Mohan   | M      | 1970-05-10 | 2000-06-01 | 9876543213 | CSE  |
+| F002  | Priya   | F      | 1980-08-15 | 2005-07-01 | 9876543214 | IT   |
+| F003  | Ravi    | M      | 1975-03-20 | 2002-06-10 | 9876543215 | ECE  |
++-------+---------+--------+------------+------------+------------+------+
+3 rows in set (0.365 sec)
+
+mysql> USE DBMS_LAB;
+Database changed
+mysql> DESC COURSE;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| CourseNo   | varchar(3)  | NO   | PRI | NULL    |       |
+| CourseDesc | varchar(14) | YES  |     | NULL    |       |
+| CourseType | char(1)     | YES  |     | NULL    |       |
+| SemNo      | char(1)     | YES  |     | NULL    |       |
+| HallNo     | varchar(4)  | YES  |     | NULL    |       |
+| FacNo      | varchar(4)  | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+6 rows in set (0.019 sec)
+
+mysql> DESC STUDENT;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| RegNo    | int         | YES  |     | NULL    |       |
+| Name     | varchar(15) | YES  |     | NULL    |       |
+| Gender   | char(1)     | YES  |     | NULL    |       |
+| DOB      | date        | YES  |     | NULL    |       |
+| MobileNo | bigint      | YES  |     | NULL    |       |
+| City     | varchar(15) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+6 rows in set (0.013 sec)
+
+mysql> SHOW TABLES;
++--------------------+
+| Tables_in_dbms_lab |
++--------------------+
+| course             |
+| department         |
+| faculty            |
+| student            |
+| student2           |
+| student3           |
++--------------------+
+6 rows in set (0.013 sec)
+
+mysql> SELECT CourseDesc, CourseType
+    -> FROM COURSE
+    -> WHERE CourseDesc IN ('Statistics', 'Programming');
+Empty set (0.007 sec)
+
+mysql> SELECT Name, Gender, MobileNo
+    -> FROM STUDENT
+    -> ORDER BY RegNo ASC;
++-------+--------+------------+
+| Name  | Gender | MobileNo   |
++-------+--------+------------+
+| Arun  | M      | 9876543210 |
+| Kavin | M      | 9876543211 |
+| Priya | F      | 9876543212 |
++-------+--------+------------+
+3 rows in set (0.237 sec)
+
+mysql> SELECT *
+    -> FROM FACULTY
+    -> ORDER BY DOB ASC;
++-------+---------+--------+------------+------------+------------+------+
+| FacNo | FacName | Gender | DOB        | DOJ        | MobileNo   | Dept |
++-------+---------+--------+------------+------------+------------+------+
+| F001  | Mohan   | M      | 1970-05-10 | 2000-06-01 | 9876543213 | CSE  |
+| F003  | Ravi    | M      | 1975-03-20 | 2002-06-10 | 9876543215 | ECE  |
+| F002  | Priya   | F      | 1980-08-15 | 2005-07-01 | 9876543214 | IT   |
++-------+---------+--------+------------+------------+------------+------+
+3 rows in set (0.005 sec)
+
+mysql> SELECT FacName, DOJ
+    -> FROM FACULTY
+    -> WHERE DOJ = (SELECT MAX(DOJ) FROM FACULTY);
++---------+------------+
+| FacName | DOJ        |
++---------+------------+
+| Priya   | 2005-07-01 |
++---------+------------+
+1 row in set (0.403 sec)
+
+mysql> SELECT D.DeptName, F.FacName
+    -> FROM DEPARTMENT D
+    -> INNER JOIN FACULTY F
+    -> ON D.DeptHead = F.FacNo;
++----------+---------+
+| DeptName | FacName |
++----------+---------+
+| CSE      | Mohan   |
+| IT       | Priya   |
+| ECE      | Ravi    |
++----------+---------+
+3 rows in set (0.006 sec)
+
+mysql> SELECT F.FacName, C.CourseDesc
+    -> FROM FACULTY F
+    -> INNER JOIN COURSE C
+    -> ON F.FacNo = C.FacNo
+    -> WHERE F.Dept = 'ECE'
+    -> AND F.FacName = 'Kamal';
+Empty set (0.235 sec)
+
+mysql> CREATE TABLE employees1 (
+    ->     employee_id INT,
+    ->     first_name VARCHAR(30),
+    ->     salary INT
+    -> );
+Query OK, 0 rows affected (0.486 sec)
+
+mysql> ^BINSERT INTO employees1 VALUES
+    -> (10, 'Arun', 150000),
+    -> (11, 'Kavin', 140000),
+    -> (12, 'Priya', 160000);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INSERT INTO employees1 VALUES
+(10, 'Arun', 150000),
+(11, 'Kavin', 140000),
+(12,' at line 1
+mysql> INSERT INTO employees1 VALUES
+    -> (10, 'Arun', 150000),
+    -> (11, 'Kavin', 140000),
+    -> (12, 'Priya', 160000);
+Query OK, 3 rows affected (0.374 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM employees1;
++-------------+------------+--------+
+| employee_id | first_name | salary |
++-------------+------------+--------+
+|          10 | Arun       | 150000 |
+|          11 | Kavin      | 140000 |
+|          12 | Priya      | 160000 |
++-------------+------------+--------+
+3 rows in set (0.006 sec)
+
+mysql> CREATE VIEW v1 AS
+    -> SELECT employee_id, salary
+    -> FROM employees1;
+Query OK, 0 rows affected (0.392 sec)
+
+mysql> SELECT * FROM v1;
++-------------+--------+
+| employee_id | salary |
++-------------+--------+
+|          10 | 150000 |
+|          11 | 140000 |
+|          12 | 160000 |
++-------------+--------+
+3 rows in set (0.359 sec)
+
+mysql> INSERT INTO v1 VALUES (13, 155000);
+Query OK, 1 row affected (0.372 sec)
+
+mysql> SELECT * FROM v1;
++-------------+--------+
+| employee_id | salary |
++-------------+--------+
+|          10 | 150000 |
+|          11 | 140000 |
+|          12 | 160000 |
+|          13 | 155000 |
++-------------+--------+
+4 rows in set (0.006 sec)
+
+mysql> DELETE FROM v1
+    -> WHERE employee_id = 13;
+Query OK, 1 row affected (0.372 sec)
+
+mysql> SELECT * FROM v1;
++-------------+--------+
+| employee_id | salary |
++-------------+--------+
+|          10 | 150000 |
+|          11 | 140000 |
+|          12 | 160000 |
++-------------+--------+
+3 rows in set (0.006 sec)
+
+mysql> CREATE INDEX index1
+    -> ON employees1(salary);
+Query OK, 0 rows affected (0.601 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT first_name
+    -> FROM employees1
+    -> WHERE salary > 145000;
++------------+
+| first_name |
++------------+
+| Arun       |
+| Priya      |
++------------+
+2 rows in set (0.361 sec)
+
+mysql> DROP INDEX index1
+    -> ON employees1;
+Query OK, 0 rows affected (0.426 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> CREATE INDEX index1
+    -> ON employees1(employee_id);
+Query OK, 0 rows affected (0.552 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT first_name
+    -> FROM employees1
+    -> WHERE employee_id = 10;
++------------+
+| first_name |
++------------+
+| Arun       |
++------------+
+1 row in set (0.246 sec)
+
+mysql> DROP INDEX index1
+    -> ON employees1;
+Query OK, 0 rows affected (0.415 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> CREATE TABLE DBMS_Stud (
+    ->     RegNo INT AUTO_INCREMENT PRIMARY KEY,
+    ->     StudName VARCHAR(30)
+    -> );
+Query OK, 0 rows affected (0.585 sec)
+
+mysql> INSERT INTO DBMS_Stud (StudName)
+    -> VALUES ('Arun'), ('Kavin'), ('Priya');
+Query OK, 3 rows affected (0.374 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> v
+    ->
+    -> SELECT * FROM DBMS_Stud;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'v
+
+SELECT * FROM DBMS_Stud' at line 1
+mysql> SELECT * FROM DBMS_Stud;
++-------+----------+
+| RegNo | StudName |
++-------+----------+
+|     1 | Arun     |
+|     2 | Kavin    |
+|     3 | Priya    |
++-------+----------+
+3 rows in set (0.005 sec)
+
+mysql> INSERT INTO DBMS_Stud (RegNo, StudName)
+    -> VALUES (10, 'Ravi');
+Query OK, 1 row affected (0.275 sec)
+
+mysql> SELECT * FROM DBMS_Stud;
++-------+----------+
+| RegNo | StudName |
++-------+----------+
+|     1 | Arun     |
+|     2 | Kavin    |
+|     3 | Priya    |
+|    10 | Ravi     |
++-------+----------+
+4 rows in set (0.005 sec)
+
+mysql> v
+    -> ALTER TABLE DBMS_Stud
+    -> MODIFY RegNo INT;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'v
+ALTER TABLE DBMS_Stud
+MODIFY RegNo INT' at line 1
+mysql> ALTER TABLE DBMS_Stud
+    -> MODIFY RegNo INT;
+Query OK, 4 rows affected (0.692 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> DELIMITER //
+mysql>
+mysql> CREATE PROCEDURE WhileExample()
+    -> BEGIN
+    ->     DECLARE x INT DEFAULT 1;
+    ->     DECLARE result_str VARCHAR(100) DEFAULT '';
+    ->
+    ->     WHILE x <= 5 DO
+    ->         SET result_str = CONCAT(result_str, x, ' ');
+    ->         SET x = x + 1;
+    ->     END WHILE;
+    ->
+    ->     SELECT result_str AS Result;
+    -> END //
+Query OK, 0 rows affected (0.493 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql> CALL WhileExample();
++------------+
+| Result     |
++------------+
+| 1 2 3 4 5  |
++------------+
+1 row in set (0.363 sec)
+
+Query OK, 0 rows affected (0.373 sec)
+
+mysql> DELIMITER //
+mysql>
+mysql> CREATE PROCEDURE RepeatExample()
+    -> BEGIN
+    ->     DECLARE income INT DEFAULT 1000;
+    ->
+    ->     REPEAT
+    ->         SET income = income + 1000;
+    ->     UNTIL income >= 4000
+    ->     END REPEAT;
+    ->
+    ->     SELECT income AS Final_Income;
+    -> END //
+Query OK, 0 rows affected (0.389 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql> CALL RepeatExample();
++--------------+
+| Final_Income |
++--------------+
+|         4000 |
++--------------+
+1 row in set (0.007 sec)
+
+Query OK, 0 rows affected (0.017 sec)
+
+mysql> DELIMITER //
+mysql>
+mysql> CREATE PROCEDURE IncomeLevel(IN monthly_value INT)
+    -> BEGIN
+    ->     DECLARE income_level VARCHAR(20);
+    ->
+    ->     CASE
+    ->         WHEN monthly_value <= 4000 THEN
+    ->             SET income_level = 'Low Income';
+    ->         WHEN monthly_value <= 5000 THEN
+    ->             SET income_level = 'Avg Income';
+    ->         ELSE
+    ->             SET income_level = 'High Income';
+    ->     END CASE;
+    ->
+    ->     SELECT income_level AS Income_Level;
+    -> END //
+Query OK, 0 rows affected (0.052 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql> CALL IncomeLevel(3500);
++--------------+
+| Income_Level |
++--------------+
+| Low Income   |
++--------------+
+1 row in set (0.008 sec)
+
+Query OK, 0 rows affected (0.017 sec)
+
+mysql> CALL IncomeLevel(4500);
++--------------+
+| Income_Level |
++--------------+
+| Avg Income   |
++--------------+
+1 row in set (0.005 sec)
+
+Query OK, 0 rows affected (0.016 sec)
+
+mysql> DELIMITER //
+mysql>
+mysql> CREATE PROCEDURE IncomeLoop()
+    -> BEGIN
+    ->     DECLARE income INT DEFAULT 1000;
+    ->
+    ->     income_loop: LOOP
+    ->         SET income = income + 1000;
+    ->
+    ->         IF income < 4000 THEN
+    ->             ITERATE income_loop;
+    ->         END IF;
+    ->
+    ->         LEAVE income_loop;
+    ->     END LOOP;
+    ->
+    ->     SELECT income AS Final_Income;
+    -> END //
+Query OK, 0 rows affected (0.381 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql> CALL IncomeLoop();
++--------------+
+| Final_Income |
++--------------+
+|         4000 |
++--------------+
+1 row in set (0.009 sec)
+
+Query OK, 0 rows affected (0.020 sec)
+
+mysql> CREATE TABLE Class (
+    ->     name VARCHAR(20),
+    ->     id INT
+    -> ) ENGINE=InnoDB;
+Query OK, 0 rows affected (0.530 sec)
+
+mysql> INSERT INTO Class VALUES
+    -> ('alpha', 5),
+    -> ('charlie', 8);
+Query OK, 2 rows affected (0.044 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Class;
++---------+------+
+| name    | id   |
++---------+------+
+| alpha   |    5 |
+| charlie |    8 |
++---------+------+
+2 rows in set (0.005 sec)
+
+mysql> START TRANSACTION;
+Query OK, 0 rows affected (0.240 sec)
+
+mysql>
+mysql> UPDATE Class
+    -> SET name = 'bravo'
+    -> WHERE id = 5;
+Query OK, 1 row affected (0.390 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SAVEPOINT A;
+Query OK, 0 rows affected (0.006 sec)
+
+mysql> INSERT INTO Class VALUES ('uppal', 6);
+Query OK, 1 row affected (0.006 sec)
+
+mysql>
+mysql> SAVEPOINT B;
+Query OK, 0 rows affected (0.004 sec)
+
+mysql> INSERT INTO Class VALUES ('uppal', 6);
+Query OK, 1 row affected (0.006 sec)
+
+mysql>
+mysql> SAVEPOINT B;
+Query OK, 0 rows affected (0.004 sec)
+
+mysql> INSERT INTO Class VALUES ('balu', 7);
+Query OK, 1 row affected (0.007 sec)
+
+mysql>
+mysql> SAVEPOINT C;
+Query OK, 0 rows affected (0.230 sec)
+
+mysql> SELECT * FROM Class;
++---------+------+
+| name    | id   |
++---------+------+
+| bravo   |    5 |
+| charlie |    8 |
+| uppal   |    6 |
+| uppal   |    6 |
+| balu    |    7 |
++---------+------+
+5 rows in set (0.005 sec)
+
+mysql> ROLLBACK TO B;
+Query OK, 0 rows affected (0.008 sec)
+
+mysql>
+mysql> SELECT * FROM Class;
++---------+------+
+| name    | id   |
++---------+------+
+| bravo   |    5 |
+| charlie |    8 |
+| uppal   |    6 |
+| uppal   |    6 |
++---------+------+
+4 rows in set (0.005 sec)
+
+mysql> ROLLBACK TO A;
+Query OK, 0 rows affected (0.004 sec)
+
+mysql>
+mysql> SELECT * FROM Class;
++---------+------+
+| name    | id   |
++---------+------+
+| bravo   |    5 |
+| charlie |    8 |
++---------+------+
+2 rows in set (0.008 sec)
+
+mysql> COMMIT;
+Query OK, 0 rows affected (0.391 sec)
+
+mysql> CREATE USER 'labuser'@'localhost'
+    -> IDENTIFIED BY 'Lab@123';
+Query OK, 0 rows affected (0.491 sec)
+
+mysql> GRANT CREATE ON DBMS_LAB.*
+    -> TO 'labuser'@'localhost';
+Query OK, 0 rows affected (0.074 sec)
+
+mysql> GRANT SELECT ON DBMS_LAB.*
+    -> TO 'labuser'@'localhost';
+Query OK, 0 rows affected (0.401 sec)
+
+mysql> SHOW GRANTS FOR 'labuser'@'localhost';
++---------------------------------------------------------------+
+| Grants for labuser@localhost                                  |
++---------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `labuser`@`localhost`                   |
+| GRANT SELECT, CREATE ON `dbms_lab`.* TO `labuser`@`localhost` |
++---------------------------------------------------------------+
+2 rows in set (0.460 sec)
+
+mysql> REVOKE SELECT ON DBMS_LAB.*
+    -> FROM 'labuser'@'localhost';
+Query OK, 0 rows affected (0.128 sec)
+
+mysql> SHOW GRANTS FOR 'labuser'@'localhost';
++-------------------------------------------------------+
+| Grants for labuser@localhost                          |
++-------------------------------------------------------+
+| GRANT USAGE ON *.* TO `labuser`@`localhost`           |
+| GRANT CREATE ON `dbms_lab`.* TO `labuser`@`localhost` |
++-------------------------------------------------------+
+2 rows in set (0.004 sec)
+
+mysql> DELIMITER //
+mysql>
+mysql> CREATE PROCEDURE GetStudents()
+    -> BEGIN
+    ->     SELECT * FROM STUDENT;
+    -> END //
+Query OK, 0 rows affected (0.414 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql> CALL GetStudents();
++-------+-------+--------+------------+------------+---------+
+| RegNo | Name  | Gender | DOB        | MobileNo   | City    |
++-------+-------+--------+------------+------------+---------+
+|   101 | Arun  | M      | 2005-04-12 | 9876543210 | Chennai |
+|   102 | Kavin | M      | 2005-08-20 | 9876543211 | Salem   |
+|   103 | Priya | F      | 2006-01-15 | 9876543212 | Madurai |
++-------+-------+--------+------------+------------+---------+
+3 rows in set (0.008 sec)
+
+Query OK, 0 rows affected (0.091 sec)
+
+mysql> CREATE TABLE customers (
+    ->     customerNumber INT,
+    ->     creditLimit DECIMAL(10,2)
+    -> );
+Query OK, 0 rows affected (0.446 sec)
+
+mysql> INSERT INTO customers VALUES
+    -> (101, 60000),
+    -> (102, 30000),
+    -> (103, 5000);
+Query OK, 3 rows affected (0.414 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> DELIMITER //
+mysql>
+mysql> CREATE PROCEDURE GetCustomerLevel(
+    ->     IN p_customerNumber INT,
+    ->     OUT p_customerLevel VARCHAR(20)
+    -> )
+    -> BEGIN
+    ->     DECLARE v_creditLimit DECIMAL(10,2);
+    ->
+    ->     SELECT creditLimit
+    ->     INTO v_creditLimit
+    ->     FROM customers
+    ->     WHERE customerNumber = p_customerNumber;
+    ->
+    ->     IF v_creditLimit > 50000 THEN
+    ->         SET p_customerLevel = 'PLATINUM';
+    ->
+    ->     ELSEIF v_creditLimit >= 10000 THEN
+    ->         SET p_customerLevel = 'GOLD';
+    ->
+    ->     ELSE
+    ->         SET p_customerLevel = 'SILVER';
+    ->     END IF;
+    -> END //
+Query OK, 0 rows affected (0.407 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql> CALL GetCustomerLevel(101, @level);
+Query OK, 1 row affected (0.393 sec)
+
+mysql> SELECT @level AS Customer_Level;
++----------------+
+| Customer_Level |
++----------------+
+| PLATINUM       |
++----------------+
+1 row in set (0.016 sec)
+
+mysql> CALL GetCustomerLevel(102, @level);
+Query OK, 1 row affected (0.006 sec)
+
+mysql> SELECT @level AS Customer_Level;
++----------------+
+| Customer_Level |
++----------------+
+| GOLD           |
++----------------+
+1 row in set (0.004 sec)
+
+mysql> CALL GetCustomerLevel(103, @level);
+Query OK, 1 row affected (0.007 sec)
+
+mysql> SELECT @level AS Customer_Level;
++----------------+
+| Customer_Level |
++----------------+
+| SILVER         |
++----------------+
+1 row in set (0.005 sec)
+
+mysql> DELIMITER //
+mysql>
+mysql> CREATE FUNCTION GetLevel(credit DECIMAL(10,2))
+    -> RETURNS VARCHAR(20)
+    -> DETERMINISTIC
+    -> BEGIN
+    ->     DECLARE customer_level VARCHAR(20);
+    ->
+    ->     IF credit > 50000 THEN
+    ->         SET customer_level = 'PLATINUM';
+    ->
+    ->     ELSEIF credit >= 10000 THEN
+    ->         SET customer_level = 'GOLD';
+    ->
+    ->     ELSE
+    ->         SET customer_level = 'SILVER';
+    ->     END IF;
+    ->
+    ->     RETURN customer_level;
+    -> END //
+Query OK, 0 rows affected (0.422 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql> SELECT GetLevel(60000) AS Customer_Level;
++----------------+
+| Customer_Level |
++----------------+
+| PLATINUM       |
++----------------+
+1 row in set (0.399 sec)
+
+mysql> SELECT GetLevel(30000) AS Customer_Level;
++----------------+
+| Customer_Level |
++----------------+
+| GOLD           |
++----------------+
+1 row in set (0.005 sec)
+
+mysql> SELECT GetLevel(5000) AS Customer_Level;
++----------------+
+| Customer_Level |
++----------------+
+| SILVER         |
++----------------+
+1 row in set (0.005 sec)
+
+mysql> SET SESSION max_sp_recursion_depth = 255;
+Query OK, 0 rows affected (0.006 sec)
+
+mysql> SELECT GetLevel(30000) AS Customer_Level;
++----------------+
+| Customer_Level |
++----------------+
+| GOLD           |
++----------------+
+1 row in set (0.005 sec)
+
+mysql> SELECT GetLevel(5000) AS Customer_Level;
++----------------+
+| Customer_Level |
++----------------+
+| SILVER         |
++----------------+
+1 row in set (0.005 sec)
+
+mysql> DELIMITER //
+mysql>
+mysql> CREATE PROCEDURE Factorial(
+    ->     IN n INT,
+    ->     OUT result BIGINT
+    -> )
+    -> BEGIN
+    ->     DECLARE temp BIGINT DEFAULT 1;
+    ->
+    ->     IF n < 0 THEN
+    ->         SET result = NULL;
+    ->
+    ->     ELSEIF n <= 1 THEN
+    ->         SET result = 1;
+    ->
+    ->     ELSE
+    ->         CALL Factorial(n - 1, temp);
+    ->         SET result = n * temp;
+    ->     END IF;
+    -> END //
+Query OK, 0 rows affected (0.408 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql> CALL Factorial(5, @answer);
+Query OK, 0 rows affected (0.253 sec)
+
+mysql>
+mysql> SELECT @answer AS Factorial_Result;
++------------------+
+| Factorial_Result |
++------------------+
+|              120 |
++------------------+
+1 row in set (0.005 sec)
+
+mysql> CALL Factorial(4, @answer);
+Query OK, 0 rows affected (0.005 sec)
+
+mysql> SELECT @answer AS Factorial_Result;
++------------------+
+| Factorial_Result |
++------------------+
+|               24 |
++------------------+
+1 row in set (0.004 sec)
+
+mysql> DELIMITER //
+mysql>
+mysql> CREATE FUNCTION GetCustomerLevel(
+    ->     credit DECIMAL(10,2)
+    -> )
+    -> RETURNS VARCHAR(20)
+    -> DETERMINISTIC
+    -> BEGIN
+    ->     DECLARE customer_level VARCHAR(20);
+    ->
+    ->     IF credit > 50000 THEN
+    ->         SET customer_level = 'PLATINUM';
+    ->
+    ->     ELSEIF credit >= 10000 THEN
+    ->         SET customer_level = 'GOLD';
+    ->
+    ->     ELSE
+    ->         SET customer_level = 'SILVER';
+    ->     END IF;
+    ->
+    ->     RETURN customer_level;
+    -> END //
+Query OK, 0 rows affected (0.410 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql> SELECT GetCustomerLevel(60000) AS Customer_Level;
++----------------+
+| Customer_Level |
++----------------+
+| PLATINUM       |
++----------------+
+1 row in set (0.009 sec)
+
+mysql> SELECT GetCustomerLevel(30000) AS Customer_Level;
++----------------+
+| Customer_Level |
++----------------+
+| GOLD           |
++----------------+
+1 row in set (0.006 sec)
+
+mysql> SELECT GetCustomerLevel(5000) AS Customer_Level;
++----------------+
+| Customer_Level |
++----------------+
+| SILVER         |
++----------------+
+1 row in set (0.007 sec)
+
+mysql> SET SESSION max_sp_recursion_depth = 255;
+Query OK, 0 rows affected (0.004 sec)
+
+mysql> DELIMITER //
+mysql>
+mysql> CREATE PROCEDURE Factorial(
+    ->     IN n INT,
+    ->     OUT fact BIGINT
+    -> )
+    -> BEGIN
+    ->     IF n <= 1 THEN
+    ->         SET fact = 1;
+    ->     ELSE
+    ->         CALL Factorial(n - 1, fact);
+    ->         SET fact = fact * n;
+    ->     END IF;
+    -> END //
+ERROR 1304 (42000): PROCEDURE Factorial already exists
+mysql>
+mysql> DELIMITER ;v
+mysql> CALL Factorial(5, @result);
+    ->
+    -> SELECT @result AS Factorial;
+    -> \c
+mysql> DELIMITER ;
+mysql> CALL Factorial(5, @result);
+Query OK, 0 rows affected (0.012 sec)
+
+mysql> SELECT @result AS Factorial;
++-----------+
+| Factorial |
++-----------+
+|       120 |
++-----------+
+1 row in set (0.004 sec)
+
+mysql> CALL Factorial(4, @result);
+Query OK, 0 rows affected (0.007 sec)
+
+mysql>
+mysql> SELECT @result AS Factorial;
++-----------+
+| Factorial |
++-----------+
+|        24 |
++-----------+
+1 row in set (0.004 sec)
+
+mysql> CREATE TABLE employees (
+    ->     id INT,
+    ->     Name VARCHAR(100),
+    ->     email VARCHAR(100)
+    -> );
+Query OK, 0 rows affected (0.532 sec)
+
+mysql> INSERT INTO employees VALUES
+    -> (1, 'Harry Potter', 'pharry@warnerbros.com'),
+    -> (2, 'Clark Kent', 'kclark@dccomics.com'),
+    -> (3, 'Tony Stark', 'stony@marvel.com');
+Query OK, 3 rows affected (0.411 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM employees;
++------+--------------+-----------------------+
+| id   | Name         | email                 |
++------+--------------+-----------------------+
+|    1 | Harry Potter | pharry@warnerbros.com |
+|    2 | Clark Kent   | kclark@dccomics.com   |
+|    3 | Tony Stark   | stony@marvel.com      |
++------+--------------+-----------------------+
+3 rows in set (0.005 sec)
+
+mysql> DELIMITER $$
+mysql>
+mysql> CREATE PROCEDURE build_email_list(
+    ->     INOUT email_list VARCHAR(4000)
+    -> )
+    -> BEGIN
+    ->     DECLARE v_finished INT DEFAULT 0;
+    ->     DECLARE v_email VARCHAR(100) DEFAULT '';
+    ->
+    ->     DECLARE email_cursor CURSOR FOR
+    ->         SELECT email FROM employees;
+    ->
+    ->     DECLARE CONTINUE HANDLER FOR NOT FOUND
+    ->         SET v_finished = 1;
+    ->
+    ->     OPEN email_cursor;
+    ->
+    ->     get_email: LOOP
+    ->         FETCH email_cursor INTO v_email;
+    ->
+    ->         IF v_finished = 1 THEN
+    ->             LEAVE get_email;
+    ->         END IF;
+    ->
+    ->         SET email_list = CONCAT(email_list, v_email, ';');
+    ->     END LOOP;
+    ->
+    ->     CLOSE email_cursor;
+    -> END$$
+Query OK, 0 rows affected (0.497 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql> SET @email_list = '';
+Query OK, 0 rows affected (0.232 sec)
+
+mysql> CALL build_email_list(@email_list);
+Query OK, 0 rows affected (0.425 sec)
+
+mysql> SELECT @email_list AS Email_List;
++-------------------------------------------------------------+
+| Email_List                                                  |
++-------------------------------------------------------------+
+| pharry@warnerbros.com;kclark@dccomics.com;stony@marvel.com; |
++-------------------------------------------------------------+
+1 row in set (0.007 sec)
+
+mysql> DESC employees;
++-------+--------------+------+-----+---------+-------+
+| Field | Type         | Null | Key | Default | Extra |
++-------+--------------+------+-----+---------+-------+
+| id    | int          | YES  |     | NULL    |       |
+| Name  | varchar(100) | YES  |     | NULL    |       |
+| email | varchar(100) | YES  |     | NULL    |       |
++-------+--------------+------+-----+---------+-------+
+3 rows in set (0.021 sec)
+
+mysql> CREATE TABLE EMPLOYEES_AUDIT (
+    ->     id INT,
+    ->     Old_Name VARCHAR(100),
+    ->     Old_Email VARCHAR(100),
+    ->     Changed_Date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    -> );
+Query OK, 0 rows affected (0.598 sec)
+
+mysql> DELIMITER //
+mysql>
+mysql> CREATE TRIGGER BeforeEmployeeUpdate
+    -> BEFORE UPDATE ON employees
+    -> FOR EACH ROW
+    -> BEGIN
+    ->     INSERT INTO EMPLOYEES_AUDIT
+    ->     (id, Old_Name, Old_Email)
+    ->     VALUES
+    ->     (OLD.id, OLD.Name, OLD.email);
+    -> END //
+Query OK, 0 rows affected (0.420 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql> UPDATE employees
+    -> SET Name = 'Harry Potter Updated'
+    -> WHERE id = 1;
+Query OK, 1 row affected (0.416 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM employees;
++------+----------------------+-----------------------+
+| id   | Name                 | email                 |
++------+----------------------+-----------------------+
+|    1 | Harry Potter Updated | pharry@warnerbros.com |
+|    2 | Clark Kent           | kclark@dccomics.com   |
+|    3 | Tony Stark           | stony@marvel.com      |
++------+----------------------+-----------------------+
+3 rows in set (0.006 sec)
+
+mysql> SELECT * FROM EMPLOYEES_AUDIT;
++------+--------------+-----------------------+---------------------+
+| id   | Old_Name     | Old_Email             | Changed_Date        |
++------+--------------+-----------------------+---------------------+
+|    1 | Harry Potter | pharry@warnerbros.com | 2026-10-30 09:02:00 |
++------+--------------+-----------------------+---------------------+
+1 row in set (0.006 sec)
+
+mysql> SELECT REPLACE('HELLO WORLD', 'WORLD', 'MYSQL') AS Result;
++-------------+
+| Result      |
++-------------+
+| HELLO MYSQL |
++-------------+
+1 row in set (0.005 sec)
+
+mysql> SELECT REPEAT('SQL ', 3) AS Result;
++--------------+
+| Result       |
++--------------+
+| SQL SQL SQL  |
++--------------+
+1 row in set (0.005 sec)
+
+mysql> SELECT REVERSE('MYSQL') AS Result;
++--------+
+| Result |
++--------+
+| LQSYM  |
++--------+
+1 row in set (0.296 sec)
+
+mysql> SELECT RIGHT('DATABASE', 4) AS Result;
++--------+
+| Result |
++--------+
+| BASE   |
++--------+
+1 row in set (0.289 sec)
+
+mysql> SELECT LEFT('DATABASE', 4) AS Result;
++--------+
+| Result |
++--------+
+| DATA   |
++--------+
+1 row in set (0.235 sec)
+
+mysql> SELECT RPAD('SQL', 6, '*') AS Result;
++--------+
+| Result |
++--------+
+| SQL*** |
++--------+
+1 row in set (0.005 sec)
+
+mysql> SELECT LPAD('SQL', 6, '*') AS Result;
++--------+
+| Result |
++--------+
+| ***SQL |
++--------+
+1 row in set (0.004 sec)
+
+mysql> SELECT ASCII('A') AS Result;
++--------+
+| Result |
++--------+
+|     65 |
++--------+
+1 row in set (0.005 sec)
+
+mysql> SELECT BIN(10) AS Result;
++--------+
+| Result |
++--------+
+| 1010   |
++--------+
+1 row in set (0.004 sec)
+
+mysql> SELECT OCT(10) AS Result;
++--------+
+| Result |
++--------+
+| 12     |
++--------+
+1 row in set (0.004 sec)
