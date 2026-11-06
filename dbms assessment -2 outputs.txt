@@ -1,0 +1,842 @@
+password: ********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 26
+Server version: 9.7.0 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++----------------------+
+| Database             |
++----------------------+
+| apple                |
+| archana              |
+| bat                  |
+| bhavana              |
+| cake                 |
+| cat                  |
+| college              |
+| daddy                |
+| dbms                 |
+| doll                 |
+| information_schema   |
+| lab                  |
+| meridian_museum      |
+| meridian_museum_demo |
+| mummy                |
+| mysql                |
+| orange               |
+| parrot               |
+| performance_schema   |
+| pujitha              |
+| pujithas             |
+| puppy                |
+| rakesh               |
+| reddy                |
+| sakila               |
+| srinu                |
+| student              |
+| suhasini             |
+| sys                  |
+| teja                 |
+| teja1                |
+| tejaswi              |
+| world                |
++----------------------+
+33 rows in set (0.085 sec)
+
+mysql> create database pujitha;
+ERROR 1007 (HY000): Can't create database 'pujitha'; database exists
+mysql> create database anna;
+Query OK, 1 row affected (0.094 sec)
+
+mysql> show databases;
++----------------------+
+| Database             |
++----------------------+
+| anna                 |
+| apple                |
+| archana              |
+| bat                  |
+| bhavana              |
+| cake                 |
+| cat                  |
+| college              |
+| daddy                |
+| dbms                 |
+| doll                 |
+| information_schema   |
+| lab                  |
+| meridian_museum      |
+| meridian_museum_demo |
+| mummy                |
+| mysql                |
+| orange               |
+| parrot               |
+| performance_schema   |
+| pujitha              |
+| pujithas             |
+| puppy                |
+| rakesh               |
+| reddy                |
+| sakila               |
+| srinu                |
+| student              |
+| suhasini             |
+| sys                  |
+| teja                 |
+| teja1                |
+| tejaswi              |
+| world                |
++----------------------+
+34 rows in set (0.010 sec)
+
+mysql> use anna;
+Database changed
+mysql> CREATE DATABASE IF NOT EXISTS SwiftSpan_DB_demo;
+Query OK, 1 row affected (0.094 sec)
+
+mysql> USE SwiftSpan_DB_demo;
+Database changed
+mysql>
+mysql> SET FOREIGN_KEY_CHECKS = 0;
+Query OK, 0 rows affected (0.020 sec)
+
+mysql> DROP TABLE IF EXISTS Observation;
+Query OK, 0 rows affected, 1 warning (0.063 sec)
+
+mysql> DROP TABLE IF EXISTS BandPolicy;
+Query OK, 0 rows affected, 1 warning (0.021 sec)
+
+mysql> DROP TABLE IF EXISTS CompletionPolicy;
+Query OK, 0 rows affected, 1 warning (0.018 sec)
+
+mysql> DROP TABLE IF EXISTS Assignment;
+Query OK, 0 rows affected, 1 warning (0.018 sec)
+
+mysql> DROP TABLE IF EXISTS Coordinator;
+Query OK, 0 rows affected, 1 warning (0.017 sec)
+
+mysql> DROP TABLE IF EXISTS Service;
+Query OK, 0 rows affected, 1 warning (0.023 sec)
+
+mysql> DROP TABLE IF EXISTS Sender;
+Query OK, 0 rows affected, 1 warning (0.019 sec)
+
+mysql> SET FOREIGN_KEY_CHECKS = 1;
+Query OK, 0 rows affected (0.003 sec)
+
+mysql>
+mysql> CREATE TABLE Sender (
+    ->     SenderID INT PRIMARY KEY,
+    ->     SenderName VARCHAR(100) NOT NULL,
+    ->     RouteGroup VARCHAR(30) NOT NULL
+    -> );
+Query OK, 0 rows affected (0.205 sec)
+
+mysql>
+mysql> CREATE TABLE Service (
+    ->     ServiceID INT PRIMARY KEY,
+    ->     ServiceCode VARCHAR(20) NOT NULL UNIQUE,
+    ->     ServiceName VARCHAR(100) NOT NULL,
+    ->     VolumeWeight DECIMAL(8,3) NOT NULL CHECK (VolumeWeight > 0)
+    -> );
+Query OK, 0 rows affected (0.384 sec)
+
+mysql>
+mysql> CREATE TABLE Coordinator (
+    ->     CoordinatorID INT PRIMARY KEY,
+    ->     CoordinatorName VARCHAR(100) NOT NULL,
+    ->     Hub VARCHAR(60) NOT NULL
+    -> );
+Query OK, 0 rows affected (0.203 sec)
+
+mysql>
+mysql> CREATE TABLE Assignment (
+    ->     SenderID INT NOT NULL,
+    ->     ServiceID INT NOT NULL,
+    ->     CoordinatorID INT NOT NULL,
+    ->     PRIMARY KEY (SenderID, ServiceID),
+    ->     FOREIGN KEY (SenderID) REFERENCES Sender(SenderID),
+    ->     FOREIGN KEY (ServiceID) REFERENCES Service(ServiceID),
+    ->     FOREIGN KEY (CoordinatorID) REFERENCES Coordinator(CoordinatorID)
+    -> );
+Query OK, 0 rows affected (0.434 sec)
+
+mysql>
+mysql> CREATE TABLE CompletionPolicy (
+    ->     Completion TINYINT UNSIGNED PRIMARY KEY,
+    ->     ServiceBand VARCHAR(12) NOT NULL,
+    ->     CHECK (Completion BETWEEN 0 AND 100),
+    ->     UNIQUE (Completion, ServiceBand)
+    -> );
+Query OK, 0 rows affected (0.392 sec)
+
+mysql>
+mysql> CREATE TABLE BandPolicy (
+    ->     ServiceBand VARCHAR(12) PRIMARY KEY,
+    ->     RouteFactor DECIMAL(6,3) NOT NULL CHECK (RouteFactor > 0)
+    -> );
+Query OK, 0 rows affected (0.152 sec)
+
+mysql>
+mysql> CREATE TABLE Observation (
+    ->     SenderID INT NOT NULL,
+    ->     ServiceID INT NOT NULL,
+    ->     DispatchWave TINYINT UNSIGNED NOT NULL,
+    ->     Completion TINYINT UNSIGNED NOT NULL,
+    ->     PRIMARY KEY (SenderID, ServiceID, DispatchWave),
+    ->     CHECK (DispatchWave BETWEEN 1 AND 4),
+    ->     CHECK (Completion BETWEEN 0 AND 100),
+    ->     FOREIGN KEY (SenderID, ServiceID)
+    ->         REFERENCES Assignment(SenderID, ServiceID),
+    ->     FOREIGN KEY (Completion)
+    ->         REFERENCES CompletionPolicy(Completion)
+    -> );
+Query OK, 0 rows affected (0.510 sec)
+
+mysql>
+mysql> -- Policy: 0-38 LOW, 39-69 STANDARD, 70-100 HIGH
+Query OK, 0 rows affected (0.004 sec)
+
+mysql> INSERT INTO BandPolicy (ServiceBand, RouteFactor) VALUES
+    -> ('LOW', 0.800),
+    -> ('STANDARD', 1.000),
+    -> ('HIGH', 1.250);
+Query OK, 3 rows affected (0.040 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> INSERT INTO CompletionPolicy (Completion, ServiceBand)
+    -> WITH RECURSIVE numbers AS (
+    ->     SELECT 0 AS n
+    ->     UNION ALL
+    ->     SELECT n + 1 FROM numbers WHERE n < 100
+    -> )
+    -> SELECT n,
+    ->        CASE
+    ->            WHEN n <= 38 THEN 'LOW'
+    ->            WHEN n <= 69 THEN 'STANDARD'
+    ->            ELSE 'HIGH'
+    ->        END
+    -> FROM numbers;
+Query OK, 101 rows affected (0.098 sec)
+Records: 101  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> INSERT INTO Sender VALUES
+    -> (1, 'Asha Rao', 'NORTH'),
+    -> (2, 'Dev Kumar', 'SOUTH');
+Query OK, 2 rows affected (0.029 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> INSERT INTO Service VALUES
+    -> (1, 'EXP', 'Express Parcel', 1.500),
+    -> (2, 'STD', 'Standard Parcel', 2.000);
+Query OK, 2 rows affected (0.039 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> INSERT INTO Coordinator VALUES
+    -> (1, 'Mira Sen', 'Central Hub'),
+    -> (2, 'Noah Das', 'Central Hub');
+Query OK, 2 rows affected (0.041 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> INSERT INTO Assignment VALUES
+    -> (1, 1, 1),
+    -> (1, 2, 1),
+    -> (2, 1, 2),
+    -> (2, 2, 2);
+Query OK, 4 rows affected (0.039 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> -- Four observations per sender/service assignment
+Query OK, 0 rows affected (0.002 sec)
+
+mysql> INSERT INTO Observation VALUES
+    -> (1, 1, 1, 20), (1, 1, 2, 25), (1, 1, 3, 30), (1, 1, 4, 35),
+    -> (1, 2, 1, 50), (1, 2, 2, 55), (1, 2, 3, 60), (1, 2, 4, 70),
+    -> (2, 1, 1, 80), (2, 1, 2, 80), (2, 1, 3, 80), (2, 1, 4, 80),
+    -> (2, 2, 1, 70), (2, 2, 2, 70), (2, 2, 3, 70), (2, 2, 4, 70);
+Query OK, 16 rows affected (0.040 sec)
+Records: 16  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> -- Q1: Adjusted index for Sender 1 in wave 4
+Query OK, 0 rows affected (0.003 sec)
+
+mysql> SELECT o.SenderID, o.ServiceID, o.DispatchWave, o.Completion,
+    ->        o.Completion * s.VolumeWeight * bp.RouteFactor AS AdjustedIndex
+    -> FROM Observation AS o
+    -> JOIN Service AS s ON s.ServiceID = o.ServiceID
+    -> JOIN CompletionPolicy AS cp ON cp.Completion = o.Completion
+    -> JOIN BandPolicy AS bp ON bp.ServiceBand = cp.ServiceBand
+    -> WHERE o.SenderID = 1 AND o.DispatchWave = 4
+    -> ORDER BY o.ServiceID;
++----------+-----------+--------------+------------+---------------+
+| SenderID | ServiceID | DispatchWave | Completion | AdjustedIndex |
++----------+-----------+--------------+------------+---------------+
+|        1 |         1 |            4 |         35 |     42.000000 |
+|        1 |         2 |            4 |         70 |    175.000000 |
++----------+-----------+--------------+------------+---------------+
+2 rows in set (0.022 sec)
+
+mysql>
+mysql> -- Q2: Senders meeting the threshold for every assigned service
+Query OK, 0 rows affected (0.004 sec)
+
+mysql> SELECT DISTINCT a.SenderID
+    -> FROM Assignment AS a
+    -> WHERE NOT EXISTS (
+    ->     SELECT 1
+    ->     FROM Assignment AS ax
+    ->     WHERE ax.SenderID = a.SenderID
+    ->       AND NOT EXISTS (
+    ->           SELECT 1
+    ->           FROM Observation AS o
+    ->           WHERE o.SenderID = ax.SenderID
+    ->             AND o.ServiceID = ax.ServiceID
+    ->             AND o.Completion >= 39
+    ->       )
+    -> )
+    -> ORDER BY a.SenderID;
++----------+
+| SenderID |
++----------+
+|        2 |
++----------+
+1 row in set (0.037 sec)
+
+mysql>
+mysql> -- Q3: Services with no below-threshold result in wave 4
+Query OK, 0 rows affected (0.003 sec)
+
+mysql> SELECT DISTINCT o.ServiceID
+    -> FROM Observation AS o
+    -> WHERE o.DispatchWave = 4
+    ->   AND NOT EXISTS (
+    ->       SELECT 1
+    ->       FROM Observation AS x
+    ->       WHERE x.ServiceID = o.ServiceID
+    ->         AND x.DispatchWave = 4
+    ->         AND x.Completion < 39
+    ->   )
+    -> ORDER BY o.ServiceID;
++-----------+
+| ServiceID |
++-----------+
+|         2 |
++-----------+
+1 row in set (0.017 sec)
+
+mysql>
+mysql> -- Q4: Coordinators whose mean is below their hub's observation-weighted mean
+Query OK, 0 rows affected (0.002 sec)
+
+mysql> WITH coordinator_mean AS (
+    ->     SELECT a.CoordinatorID, AVG(o.Completion) AS coord_mean
+    ->     FROM Assignment AS a
+    ->     JOIN Observation AS o
+    ->       ON o.SenderID = a.SenderID
+    ->      AND o.ServiceID = a.ServiceID
+    ->     GROUP BY a.CoordinatorID
+    -> ),
+    -> hub_mean AS (
+    ->     SELECT c.Hub, AVG(o.Completion) AS hub_mean
+    ->     FROM Coordinator AS c
+    ->     JOIN Assignment AS a ON a.CoordinatorID = c.CoordinatorID
+    ->     JOIN Observation AS o
+    ->       ON o.SenderID = a.SenderID
+    ->      AND o.ServiceID = a.ServiceID
+    ->     GROUP BY c.Hub
+    -> )
+    -> SELECT c.CoordinatorID, c.CoordinatorName, c.Hub,
+    ->        ROUND(cm.coord_mean, 3) AS coord_mean,
+    ->        ROUND(hm.hub_mean, 3) AS hub_mean
+    -> FROM coordinator_mean AS cm
+    -> JOIN Coordinator AS c ON c.CoordinatorID = cm.CoordinatorID
+    -> JOIN hub_mean AS hm ON hm.Hub = c.Hub
+    -> WHERE cm.coord_mean < hm.hub_mean
+    -> ORDER BY c.CoordinatorID;
++---------------+-----------------+-------------+------------+----------+
+| CoordinatorID | CoordinatorName | Hub         | coord_mean | hub_mean |
++---------------+-----------------+-------------+------------+----------+
+|             1 | Mira Sen        | Central Hub |     43.125 |   59.063 |
++---------------+-----------------+-------------+------------+----------+
+1 row in set (0.018 sec)
+
+mysql>
+mysql> -- Q5: Senders with low results in at least 3 distinct waves
+Query OK, 0 rows affected (0.002 sec)
+
+mysql> SELECT SenderID
+    -> FROM Observation
+    -> WHERE Completion < 39
+    -> GROUP BY SenderID
+    -> HAVING COUNT(DISTINCT DispatchWave) >= 3
+    -> ORDER BY SenderID;
++----------+
+| SenderID |
++----------+
+|        1 |
++----------+
+1 row in set (0.034 sec)
+
+mysql> WITH coordinator_mean CREATE DATABASE IF NOT EXISTS SwiftSpan_DB_demo;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'CREATE DATABASE IF NOT EXISTS SwiftSpan_DB_demo' at line 1
+mysql> USE SwiftSpan_DB_demo;
+Database changed
+mysql>
+mysql> SET FOREIGN_KEY_CHECKS = 0;
+Query OK, 0 rows affected (0.002 sec)
+
+mysql> DROP TABLE IF EXISTS Observation;
+Query OK, 0 rows affected (0.325 sec)
+
+mysql> DROP TABLE IF EXISTS BandPolicy;
+Query OK, 0 rows affected (0.120 sec)
+
+mysql> DROP TABLE IF EXISTS CompletionPolicy;
+Query OK, 0 rows affected (0.107 sec)
+
+mysql> DROP TABLE IF EXISTS Assignment;
+Query OK, 0 rows affected (0.149 sec)
+
+mysql> DROP TABLE IF EXISTS Coordinator;
+Query OK, 0 rows affected (0.095 sec)
+
+mysql> DROP TABLE IF EXISTS Service;
+Query OK, 0 rows affected (0.100 sec)
+
+mysql> DROP TABLE IF EXISTS Sender;
+Query OK, 0 rows affected (0.123 sec)
+
+mysql> SET FOREIGN_KEY_CHECKS = 1;
+Query OK, 0 rows affected (0.003 sec)
+
+mysql>
+mysql> CREATE TABLE Sender (
+    ->     SenderID INT PRIMARY KEY,
+    ->     SenderName VARCHAR(100) NOT NULL,
+    ->     RouteGroup VARCHAR(30) NOT NULL
+    -> );
+Query OK, 0 rows affected (0.152 sec)
+
+mysql>
+mysql> CREATE TABLE Service (
+    ->     ServiceID INT PRIMARY KEY,
+    ->     ServiceCode VARCHAR(20) NOT NULL UNIQUE,
+    ->     ServiceName VARCHAR(100) NOT NULL,
+    ->     VolumeWeight DECIMAL(8,3) NOT NULL CHECK (VolumeWeight > 0)
+    -> );
+Query OK, 0 rows affected (0.335 sec)
+
+mysql>
+mysql> CREATE TABLE Coordinator (
+    ->     CoordinatorID INT PRIMARY KEY,
+    ->     CoordinatorName VARCHAR(100) NOT NULL,
+    ->     Hub VARCHAR(60) NOT NULL
+    -> );
+Query OK, 0 rows affected (0.100 sec)
+
+mysql>
+mysql> CREATE TABLE Assignment (
+    ->     SenderID INT NOT NULL,
+    ->     ServiceID INT NOT NULL,
+    ->     CoordinatorID INT NOT NULL,
+    ->     PRIMARY KEY (SenderID, ServiceID),
+    ->     FOREIGN KEY (SenderID) REFERENCES Sender(SenderID),
+    ->     FOREIGN KEY (ServiceID) REFERENCES Service(ServiceID),
+    ->     FOREIGN KEY (CoordinatorID) REFERENCES Coordinator(CoordinatorID)
+    -> );
+Query OK, 0 rows affected (0.261 sec)
+
+mysql>
+mysql> CREATE TABLE CompletionPolicy (
+    ->     Completion TINYINT UNSIGNED PRIMARY KEY,
+    ->     ServiceBand VARCHAR(12) NOT NULL,
+    ->     CHECK (Completion BETWEEN 0 AND 100),
+    ->     UNIQUE (Completion, ServiceBand)
+    -> );
+Query OK, 0 rows affected (0.332 sec)
+
+mysql>
+mysql> CREATE TABLE BandPolicy (
+    ->     ServiceBand VARCHAR(12) PRIMARY KEY,
+    ->     RouteFactor DECIMAL(6,3) NOT NULL CHECK (RouteFactor > 0)
+    -> );
+Query OK, 0 rows affected (0.111 sec)
+
+mysql>
+mysql> CREATE TABLE Observation (
+    ->     SenderID INT NOT NULL,
+    ->     ServiceID INT NOT NULL,
+    ->     DispatchWave TINYINT UNSIGNED NOT NULL,
+    ->     Completion TINYINT UNSIGNED NOT NULL,
+    ->     PRIMARY KEY (SenderID, ServiceID, DispatchWave),
+    ->     CHECK (DispatchWave BETWEEN 1 AND 4),
+    ->     CHECK (Completion BETWEEN 0 AND 100),
+    ->     FOREIGN KEY (SenderID, ServiceID)
+    ->         REFERENCES Assignment(SenderID, ServiceID),
+    ->     FOREIGN KEY (Completion)
+    ->         REFERENCES CompletionPolicy(Completion)
+    -> );
+Query OK, 0 rows affected (0.334 sec)
+
+mysql>
+mysql> -- Policy: 0-38 LOW, 39-69 STANDARD, 70-100 HIGH
+Query OK, 0 rows affected (0.002 sec)
+
+mysql> INSERT INTO BandPolicy (ServiceBand, RouteFactor) VALUES
+    -> ('LOW', 0.800),
+    -> ('STANDARD', 1.000),
+    -> ('HIGH', 1.250);
+Query OK, 3 rows affected (0.033 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> INSERT INTO CompletionPolicy (Completion, ServiceBand)
+    -> WITH RECURSIVE numbers AS (
+    ->     SELECT 0 AS n
+    ->     UNION ALL
+    ->     SELECT n + 1 FROM numbers WHERE n < 100
+    -> )
+    -> SELECT n,
+    ->        CASE
+    ->            WHEN n <= 38 THEN 'LOW'
+    ->            WHEN n <= 69 THEN 'STANDARD'
+    ->            ELSE 'HIGH'
+    ->        END
+    -> FROM numbers;
+Query OK, 101 rows affected (0.031 sec)
+Records: 101  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> INSERT INTO Sender VALUES
+    -> (1, 'Asha Rao', 'NORTH'),
+    -> (2, 'Dev Kumar', 'SOUTH');
+Query OK, 2 rows affected (0.019 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> INSERT INTO Service VALUES
+    -> (1, 'EXP', 'Express Parcel', 1.500),
+    -> (2, 'STD', 'Standard Parcel', 2.000);
+Query OK, 2 rows affected (0.022 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> INSERT INTO Coordinator VALUES
+    -> (1, 'Mira Sen', 'Central Hub'),
+    -> (2, 'Noah Das', 'Central Hub');
+Query OK, 2 rows affected (0.021 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> INSERT INTO Assignment VALUES
+    -> (1, 1, 1),
+    -> (1, 2, 1),
+    -> (2, 1, 2),
+    -> (2, 2, 2);
+Query OK, 4 rows affected (0.029 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> -- Four observations per sender/service assignment
+Query OK, 0 rows affected (0.002 sec)
+
+mysql> INSERT INTO Observation VALUES
+    -> (1, 1, 1, 20), (1, 1, 2, 25), (1, 1, 3, 30), (1, 1, 4, 35),
+    -> (1, 2, 1, 50), (1, 2, 2, 55), (1, 2, 3, 60), (1, 2, 4, 70),
+    -> (2, 1, 1, 80), (2, 1, 2, 80), (2, 1, 3, 80), (2, 1, 4, 80),
+    -> (2, 2, 1, 70), (2, 2, 2, 70), (2, 2, 3, 70), (2, 2, 4, 70);
+Query OK, 16 rows affected (0.031 sec)
+Records: 16  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> -- Q1: Adjusted index for Sender 1 in wave 4
+Query OK, 0 rows affected (0.003 sec)
+
+mysql> SELECT o.SenderID, o.ServiceID, o.DispatchWave, o.Completion,
+    ->        o.Completion * s.VolumeWeight * bp.RouteFactor AS AdjustedIndex
+    -> FROM Observation AS o
+    -> JOIN Service AS s ON s.ServiceID = o.ServiceID
+    -> JOIN CompletionPolicy AS cp ON cp.Completion = o.Completion
+    -> JOIN BandPolicy AS bp ON bp.ServiceBand = cp.ServiceBand
+    -> WHERE o.SenderID = 1 AND o.DispatchWave = 4
+    -> ORDER BY o.ServiceID;
++----------+-----------+--------------+------------+---------------+
+| SenderID | ServiceID | DispatchWave | Completion | AdjustedIndex |
++----------+-----------+--------------+------------+---------------+
+|        1 |         1 |            4 |         35 |     42.000000 |
+|        1 |         2 |            4 |         70 |    175.000000 |
++----------+-----------+--------------+------------+---------------+
+2 rows in set (0.007 sec)
+
+mysql>
+mysql> -- Q2: Senders meeting the threshold for every assigned service
+Query OK, 0 rows affected (0.003 sec)
+
+mysql> SELECT DISTINCT a.SenderID
+    -> FROM Assignment AS a
+    -> WHERE NOT EXISTS (
+    ->     SELECT 1
+    ->     FROM Assignment AS ax
+    ->     WHERE ax.SenderID = a.SenderID
+    ->       AND NOT EXISTS (
+    ->           SELECT 1
+    ->           FROM Observation AS o
+    ->           WHERE o.SenderID = ax.SenderID
+    ->             AND o.ServiceID = ax.ServiceID
+    ->             AND o.Completion >= 39
+    ->       )
+    -> )
+    -> ORDER BY a.SenderID;
++----------+
+| SenderID |
++----------+
+|        2 |
++----------+
+1 row in set (0.007 sec)
+
+mysql>
+mysql> -- Q3: Services with no below-threshold result in wave 4
+Query OK, 0 rows affected (0.002 sec)
+
+mysql> SELECT DISTINCT o.ServiceID
+    -> FROM Observation AS o
+    -> WHERE o.DispatchWave = 4
+    ->   AND NOT EXISTS (
+    ->       SELECT 1
+    ->       FROM Observation AS x
+    ->       WHERE x.ServiceID = o.ServiceID
+    ->         AND x.DispatchWave = 4
+    ->         AND x.Completion < 39
+    ->   )
+    -> ORDER BY o.ServiceID;
++-----------+
+| ServiceID |
++-----------+
+|         2 |
++-----------+
+1 row in set (0.007 sec)
+
+mysql>
+mysql> -- Q4: Coordinators whose mean is below their hub's observation-weighted mean
+Query OK, 0 rows affected (0.001 sec)
+
+mysql> WITH coordinator_mean AS (
+    ->     SELECT a.CoordinatorID, AVG(o.Completion) AS coord_mean
+    ->     FROM Assignment AS a
+    ->     JOIN Observation AS o
+    ->       ON o.SenderID = a.SenderID
+    ->      AND o.ServiceID = a.ServiceID
+    ->     GROUP BY a.CoordinatorID
+    -> ),
+    -> hub_mean AS (
+    ->     SELECT c.Hub, AVG(o.Completion) AS hub_mean
+    ->     FROM Coordinator AS c
+    ->     JOIN Assignment AS a ON a.CoordinatorID = c.CoordinatorID
+    ->     JOIN Observation AS o
+    ->       ON o.SenderID = a.SenderID
+    ->      AND o.ServiceID = a.ServiceID
+    ->     GROUP BY c.Hub
+    -> )
+    -> SELECT c.CoordinatorID, c.CoordinatorName, c.Hub,
+    ->        ROUND(cm.coord_mean, 3) AS coord_mean,
+    ->        ROUND(hm.hub_mean, 3) AS hub_mean
+    -> FROM coordinator_mean AS cm
+    -> JOIN Coordinator AS c ON c.CoordinatorID = cm.CoordinatorID
+    -> JOIN hub_mean AS hm ON hm.Hub = c.Hub
+    -> WHERE cm.coord_mean < hm.hub_mean
+    -> ORDER BY c.CoordinatorID;
++---------------+-----------------+-------------+------------+----------+
+| CoordinatorID | CoordinatorName | Hub         | coord_mean | hub_mean |
++---------------+-----------------+-------------+------------+----------+
+|             1 | Mira Sen        | Central Hub |     43.125 |   59.063 |
++---------------+-----------------+-------------+------------+----------+
+1 row in set (0.011 sec)
+
+mysql>
+mysql> -- Q5: Senders with low results in at least 3 distinct waves
+Query OK, 0 rows affected (0.002 sec)
+
+mysql> SELECT SenderID
+    -> FROM Observation
+    -> WHERE Completion < 39
+    -> GROUP BY SenderID
+    -> HAVING COUNT(DISTINCT DispatchWave) >= 3
+    -> ORDER BY SenderID;
++----------+
+| SenderID |
++----------+
+|        1 |
++----------+
+1 row in set (0.008 sec)
+
+mysql> USE SwiftSpan_DB_demo;
+Database changed
+mysql>
+mysql> -- Select 500, 5000, or 30000 senders.
+Query OK, 0 rows affected (0.003 sec)
+
+mysql> SET @SenderCount = 500;
+Query OK, 0 rows affected (0.004 sec)
+
+mysql>
+mysql> -- Allow the recursive sequence to reach 30000.
+Query OK, 0 rows affected (0.004 sec)
+
+mysql> SET SESSION cte_max_recursion_depth = 30000;
+Query OK, 0 rows affected (0.032 sec)
+
+mysql>
+mysql> -- Clear the previous sample data in dependency order.
+Query OK, 0 rows affected (0.002 sec)
+
+mysql> DELETE FROM Observation;
+Query OK, 16 rows affected (0.035 sec)
+
+mysql> DELETE FROM Assignment;
+Query OK, 4 rows affected (0.031 sec)
+
+mysql> DELETE FROM Sender;
+Query OK, 2 rows affected (0.016 sec)
+
+mysql> DELETE FROM Service;
+Query OK, 2 rows affected (0.018 sec)
+
+mysql> DELETE FROM Coordinator;
+Query OK, 2 rows affected (0.027 sec)
+
+mysql>
+mysql> -- Add senders.
+Query OK, 0 rows affected (0.006 sec)
+
+mysql> INSERT INTO Sender (SenderID, SenderName, RouteGroup)
+    -> WITH RECURSIVE seq AS (
+    ->     SELECT 1 AS n
+    ->     UNION ALL
+    ->     SELECT n + 1 FROM seq WHERE n < @SenderCount
+    -> )
+    -> SELECT n,
+    ->        CONCAT('Sender ', n),
+    ->        CONCAT('Route-', LPAD(MOD(n, 10) + 1, 2, '0'))
+    -> FROM seq;
+Query OK, 500 rows affected (0.132 sec)
+Records: 500  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> -- Add five services.
+Query OK, 0 rows affected (0.006 sec)
+
+mysql> INSERT INTO Service (ServiceID, ServiceCode, ServiceName, VolumeWeight) VALUES
+    -> (1, 'SVC-01', 'Express Parcel', 1.250),
+    -> (2, 'SVC-02', 'Standard Parcel', 1.000),
+    -> (3, 'SVC-03', 'Fragile Parcel', 1.500),
+    -> (4, 'SVC-04', 'Economy Parcel', 0.800),
+    -> (5, 'SVC-05', 'International Parcel', 2.000);
+Query OK, 5 rows affected (0.035 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> -- Add 25 coordinators.
+Query OK, 0 rows affected (0.006 sec)
+
+mysql> INSERT INTO Coordinator (CoordinatorID, CoordinatorName, Hub) VALUES
+    -> (1, 'Coordinator 1', 'North Hub'),
+    -> (2, 'Coordinator 2', 'North Hub'),
+    -> (3, 'Coordinator 3', 'North Hub'),
+    -> (4, 'Coordinator 4', 'North Hub'),
+    -> (5, 'Coordinator 5', 'North Hub'),
+    -> (6, 'Coordinator 6', 'South Hub'),
+    -> (7, 'Coordinator 7', 'South Hub'),
+    -> (8, 'Coordinator 8', 'South Hub'),
+    -> (9, 'Coordinator 9', 'South Hub'),
+    -> (10, 'Coordinator 10', 'South Hub'),
+    -> (11, 'Coordinator 11', 'East Hub'),
+    -> (12, 'Coordinator 12', 'East Hub'),
+    -> (13, 'Coordinator 13', 'East Hub'),
+    -> (14, 'Coordinator 14', 'East Hub'),
+    -> (15, 'Coordinator 15', 'East Hub'),
+    -> (16, 'Coordinator 16', 'West Hub'),
+    -> (17, 'Coordinator 17', 'West Hub'),
+    -> (18, 'Coordinator 18', 'West Hub'),
+    -> (19, 'Coordinator 19', 'West Hub'),
+    -> (20, 'Coordinator 20', 'West Hub'),
+    -> (21, 'Coordinator 21', 'Central Hub'),
+    -> (22, 'Coordinator 22', 'Central Hub'),
+    -> (23, 'Coordinator 23', 'Central Hub'),
+    -> (24, 'Coordinator 24', 'Central Hub'),
+    -> (25, 'Coordinator 25', 'Central Hub');
+Query OK, 25 rows affected (0.028 sec)
+Records: 25  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> -- Assign every sender to all five services.
+Query OK, 0 rows affected (0.005 sec)
+
+mysql> INSERT INTO Assignment (SenderID, ServiceID, CoordinatorID)
+    -> SELECT s.SenderID,
+    ->        v.ServiceID,
+    ->        MOD(s.SenderID + v.ServiceID - 1, 25) + 1
+    -> FROM Sender AS s
+    -> CROSS JOIN Service AS v;
+Query OK, 2500 rows affected (0.668 sec)
+Records: 2500  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> -- Add four waves for every sender/service assignment.
+Query OK, 0 rows affected (0.002 sec)
+
+mysql> -- Completion values are deterministic and stay between 0 and 100.
+Query OK, 0 rows affected (0.002 sec)
+
+mysql> INSERT INTO Observation (SenderID, ServiceID, DispatchWave, Completion)
+    -> SELECT a.SenderID,
+    ->        a.ServiceID,
+    ->        w.DispatchWave,
+    ->        MOD(a.SenderID * 17 + a.ServiceID * 23 + w.DispatchWave * 11, 101)
+    -> FROM Assignment AS a
+    -> CROSS JOIN (
+    ->     SELECT 1 AS DispatchWave
+    ->     UNION ALL SELECT 2
+    ->     UNION ALL SELECT 3
+    ->     UNION ALL SELECT 4
+    -> ) AS w;
+Query OK, 10000 rows affected (3.874 sec)
+Records: 10000  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> -- Check the loaded row counts.
+Query OK, 0 rows affected (0.005 sec)
+
+mysql> SELECT 'Sender' AS TableName, COUNT(*) AS RowCount FROM Sender
+    -> UNION ALL
+    -> SELECT 'Service', COUNT(*) FROM Service
+    -> UNION ALL
+    -> SELECT 'Coordinator', COUNT(*) FROM Coordinator
+    -> UNION ALL
+    -> SELECT 'Assignment', COUNT(*) FROM Assignment
+    -> UNION ALL
+    -> SELECT 'Observation', COUNT(*) FROM Observation;
++-------------+----------+
+| TableName   | RowCount |
++-------------+----------+
+| Sender      |      500 |
+| Service     |        5 |
+| Coordinator |       25 |
+| Assignment  |     2500 |
+| Observation |    10000 |
++-------------+----------+
+5 rows in set (0.313 sec)
