@@ -1,0 +1,1223 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 9
+Server version: 9.7.2 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql>
+mysql> -- 1. Create STUDENT table
+Query OK, 0 rows affected (0.005 sec)
+
+mysql> CREATE TABLE student (
+    ->     RegNo INT(3),
+    ->     Name CHAR(15),
+    ->     Gender CHAR(1),
+    ->     DOB INT(10),
+    ->     MobileNo INT(10),
+    ->     City CHAR(10)
+    -> );
+ERROR 1046 (3D000): No database selected
+mysql>
+mysql> DESC student;
+ERROR 1046 (3D000): No database selected
+mysql>
+mysql>
+mysql> -- 2. Create FACULTY table
+Query OK, 0 rows affected (0.006 sec)
+
+mysql> CREATE TABLE faculty (
+    ->     FacNo INT(3),
+    ->     FacName CHAR(15),
+    ->     Gender CHAR(1),
+    ->     DOB INT(10),
+    ->     MobileNo INT(10),
+    ->     DOJ INT(10)
+    -> );
+ERROR 1046 (3D000): No database selected
+mysql>
+mysql> DESC faculty;
+ERROR 1046 (3D000): No database selected
+mysql>
+mysql>
+mysql> -- 3. Create DEPARTMENT table
+Query OK, 0 rows affected (0.006 sec)
+
+mysql> CREATE TABLE department (
+    ->     DeptNo INT(10),
+    ->     DeptName CHAR(10),
+    ->     DeptHead CHAR(10)
+    -> );
+ERROR 1046 (3D000): No database selected
+mysql>
+mysql> DESC department;
+ERROR 1046 (3D000): No database selected
+mysql>
+mysql>
+mysql> -- 4. Create COURSE table
+Query OK, 0 rows affected (0.005 sec)
+
+mysql> CREATE TABLE course (
+    ->     CourseNo INT(3),
+    ->     CourseDesc CHAR(15),
+    ->     CourseType CHAR(1),
+    ->     SemNo INT(10),
+    ->     HallNo INT(10),
+    ->     FacNo INT(10)
+    -> );
+ERROR 1046 (3D000): No database selected
+mysql>
+mysql> DESC course;
+ERROR 1046 (3D000): No database selected
+mysql>
+mysql>
+mysql> -- 5. Add Dept column to FACULTY
+Query OK, 0 rows affected (0.005 sec)
+
+mysql> ALTER TABLE faculty ADD Dept CHAR(10);
+ERROR 1046 (3D000): No database selected
+mysql>
+mysql> DESC faculty;
+ERROR 1046 (3D000): No database selected
+mysql>
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| csa0512            |
+| dbms_lab           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+6 rows in set (0.442 sec)
+
+mysql> create database CSA0512;
+ERROR 1007 (HY000): Can't create database 'csa0512'; database exists
+mysql> use CSA0512;
+Database changed
+mysql>
+mysql> -- 1. Create STUDENT table
+Query OK, 0 rows affected (0.005 sec)
+
+mysql> CREATE TABLE student (
+    ->     RegNo INT(3),
+    ->     Name CHAR(15),
+    ->     Gender CHAR(1),
+    ->     DOB INT(10),
+    ->     MobileNo INT(10),
+    ->     City CHAR(10)
+    -> );
+ERROR 1050 (42S01): Table 'student' already exists
+mysql>
+mysql> DESC student;
++-----------------+--------------+------+-----+---------+-------+
+| Field           | Type         | Null | Key | Default | Extra |
++-----------------+--------------+------+-----+---------+-------+
+| Student_ID      | int          | NO   | PRI | NULL    |       |
+| Student_Name    | varchar(100) | NO   |     | NULL    |       |
+| Gender          | varchar(10)  | YES  |     | NULL    |       |
+| DOB             | date         | YES  |     | NULL    |       |
+| Email           | varchar(100) | YES  | UNI | NULL    |       |
+| Phone           | varchar(20)  | YES  |     | NULL    |       |
+| Course_ID       | int          | YES  |     | NULL    |       |
+| Student_Address | varchar(150) | YES  |     | NULL    |       |
+| Admission_Date  | date         | YES  |     | NULL    |       |
+| Blood_Group     | varchar(5)   | YES  |     | NULL    |       |
+| Marks           | int          | YES  |     | NULL    |       |
++-----------------+--------------+------+-----+---------+-------+
+11 rows in set (0.230 sec)
+
+mysql>
+mysql>
+mysql> -- 2. Create FACULTY table
+Query OK, 0 rows affected (0.004 sec)
+
+mysql> CREATE TABLE faculty (
+    ->     FacNo INT(3),
+    ->     FacName CHAR(15),
+    ->     Gender CHAR(1),
+    ->     DOB INT(10),
+    ->     MobileNo INT(10),
+    ->     DOJ INT(10)
+    -> );
+Query OK, 0 rows affected, 4 warnings (0.255 sec)
+
+mysql>
+mysql> DESC faculty;
++----------+----------+------+-----+---------+-------+
+| Field    | Type     | Null | Key | Default | Extra |
++----------+----------+------+-----+---------+-------+
+| FacNo    | int      | YES  |     | NULL    |       |
+| FacName  | char(15) | YES  |     | NULL    |       |
+| Gender   | char(1)  | YES  |     | NULL    |       |
+| DOB      | int      | YES  |     | NULL    |       |
+| MobileNo | int      | YES  |     | NULL    |       |
+| DOJ      | int      | YES  |     | NULL    |       |
++----------+----------+------+-----+---------+-------+
+6 rows in set (0.036 sec)
+
+mysql>
+mysql>
+mysql> -- 3. Create DEPARTMENT table
+Query OK, 0 rows affected (0.003 sec)
+
+mysql> CREATE TABLE department (
+    ->     DeptNo INT(10),
+    ->     DeptName CHAR(10),
+    ->     DeptHead CHAR(10)
+    -> );
+ERROR 1050 (42S01): Table 'department' already exists
+mysql>
+mysql> DESC department;
++-----------------+---------------+------+-----+---------+-------+
+| Field           | Type          | Null | Key | Default | Extra |
++-----------------+---------------+------+-----+---------+-------+
+| Department_ID   | int           | NO   | PRI | NULL    |       |
+| Department_Name | varchar(100)  | NO   |     | NULL    |       |
+| Head_Name       | varchar(100)  | YES  |     | NULL    |       |
+| Location        | varchar(100)  | YES  |     | NULL    |       |
+| Phone           | varchar(15)   | YES  |     | NULL    |       |
+| Budget          | decimal(12,2) | YES  |     | NULL    |       |
++-----------------+---------------+------+-----+---------+-------+
+6 rows in set (0.013 sec)
+
+mysql>
+mysql>
+mysql> -- 4. Create COURSE table
+Query OK, 0 rows affected (0.004 sec)
+
+mysql> CREATE TABLE course (
+    ->     CourseNo INT(3),
+    ->     CourseDesc CHAR(15),
+    ->     CourseType CHAR(1),
+    ->     SemNo INT(10),
+    ->     HallNo INT(10),
+    ->     FacNo INT(10)
+    -> );
+ERROR 1050 (42S01): Table 'course' already exists
+mysql>
+mysql> DESC course;
++-----------------+---------------+------+-----+---------+-------+
+| Field           | Type          | Null | Key | Default | Extra |
++-----------------+---------------+------+-----+---------+-------+
+| Course_ID       | int           | NO   | PRI | NULL    |       |
+| Course_Name     | varchar(100)  | NO   |     | NULL    |       |
+| Course_Duration | varchar(30)   | YES  |     | NULL    |       |
+| Fees            | decimal(10,2) | YES  |     | NULL    |       |
+| Department_ID   | int           | YES  |     | NULL    |       |
+| Course_Type     | varchar(50)   | YES  |     | NULL    |       |
++-----------------+---------------+------+-----+---------+-------+
+6 rows in set (0.014 sec)
+
+mysql>
+mysql>
+mysql> -- 5. Add Dept column to FACULTY
+Query OK, 0 rows affected (0.003 sec)
+
+mysql> ALTER TABLE faculty ADD Dept CHAR(10);
+Query OK, 0 rows affected (0.466 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> DESC faculty;
++----------+----------+------+-----+---------+-------+
+| Field    | Type     | Null | Key | Default | Extra |
++----------+----------+------+-----+---------+-------+
+| FacNo    | int      | YES  |     | NULL    |       |
+| FacName  | char(15) | YES  |     | NULL    |       |
+| Gender   | char(1)  | YES  |     | NULL    |       |
+| DOB      | int      | YES  |     | NULL    |       |
+| MobileNo | int      | YES  |     | NULL    |       |
+| DOJ      | int      | YES  |     | NULL    |       |
+| Dept     | char(10) | YES  |     | NULL    |       |
++----------+----------+------+-----+---------+-------+
+7 rows in set (0.029 sec)
+
+mysql>
+mysql> -- 1. Add PRIMARY KEY to STUDENT2
+Query OK, 0 rows affected (0.011 sec)
+
+mysql> ALTER TABLE student2 ADD PRIMARY KEY (RegNo);
+ERROR 1146 (42S02): Table 'csa0512.student2' doesn't exist
+mysql> DESC student2;
+ERROR 1146 (42S02): Table 'csa0512.student2' doesn't exist
+mysql>
+mysql>
+mysql> -- 2. Add PRIMARY KEY and CHECK constraint to FACULTY
+Query OK, 0 rows affected (0.009 sec)
+
+mysql> ALTER TABLE faculty ADD PRIMARY KEY (FacNo);
+Query OK, 0 rows affected (0.677 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> ALTER TABLE faculty
+    -> ADD CHECK (Gender = 'M' OR Gender = 'F');
+Query OK, 0 rows affected (0.899 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> DESC faculty;
++----------+----------+------+-----+---------+-------+
+| Field    | Type     | Null | Key | Default | Extra |
++----------+----------+------+-----+---------+-------+
+| FacNo    | int      | NO   | PRI | NULL    |       |
+| FacName  | char(15) | YES  |     | NULL    |       |
+| Gender   | char(1)  | YES  |     | NULL    |       |
+| DOB      | int      | YES  |     | NULL    |       |
+| MobileNo | int      | YES  |     | NULL    |       |
+| DOJ      | int      | YES  |     | NULL    |       |
+| Dept     | char(10) | YES  |     | NULL    |       |
++----------+----------+------+-----+---------+-------+
+7 rows in set (0.061 sec)
+
+mysql>
+mysql>
+mysql> -- 3. Add PRIMARY KEY to DEPARTMENT
+Query OK, 0 rows affected (0.003 sec)
+
+mysql> ALTER TABLE department ADD PRIMARY KEY (DeptNo);
+ERROR 1068 (42000): Multiple primary key defined
+mysql> DESC department;
++-----------------+---------------+------+-----+---------+-------+
+| Field           | Type          | Null | Key | Default | Extra |
++-----------------+---------------+------+-----+---------+-------+
+| Department_ID   | int           | NO   | PRI | NULL    |       |
+| Department_Name | varchar(100)  | NO   |     | NULL    |       |
+| Head_Name       | varchar(100)  | YES  |     | NULL    |       |
+| Location        | varchar(100)  | YES  |     | NULL    |       |
+| Phone           | varchar(15)   | YES  |     | NULL    |       |
+| Budget          | decimal(12,2) | YES  |     | NULL    |       |
++-----------------+---------------+------+-----+---------+-------+
+6 rows in set (0.013 sec)
+
+mysql>
+mysql>
+mysql> -- 4. Add PRIMARY KEY and CHECK constraint to COURSE
+Query OK, 0 rows affected (0.003 sec)
+
+mysql> ALTER TABLE course ADD PRIMARY KEY (CourseNo);
+ERROR 1068 (42000): Multiple primary key defined
+mysql>
+mysql> ALTER TABLE course
+    -> ADD CHECK (SemNo >= 1 AND SemNo <= 6);
+ERROR 1054 (42S22): Unknown column 'SemNo' in 'check constraint course_chk_1 expression'
+mysql>
+mysql> DESC course;
++-----------------+---------------+------+-----+---------+-------+
+| Field           | Type          | Null | Key | Default | Extra |
++-----------------+---------------+------+-----+---------+-------+
+| Course_ID       | int           | NO   | PRI | NULL    |       |
+| Course_Name     | varchar(100)  | NO   |     | NULL    |       |
+| Course_Duration | varchar(30)   | YES  |     | NULL    |       |
+| Fees            | decimal(10,2) | YES  |     | NULL    |       |
+| Department_ID   | int           | YES  |     | NULL    |       |
+| Course_Type     | varchar(50)   | YES  |     | NULL    |       |
++-----------------+---------------+------+-----+---------+-------+
+6 rows in set (0.015 sec)
+
+mysql>
+mysql>
+mysql> -- 5. Add UNIQUE constraint to STUDENT2
+Query OK, 0 rows affected (0.003 sec)
+
+mysql> ALTER TABLE student2 ADD UNIQUE (S1Name);
+ERROR 1146 (42S02): Table 'csa0512.student2' doesn't exist
+mysql> DESC student2;
+ERROR 1146 (42S02): Table 'csa0512.student2' doesn't exist
+mysql>
+mysql>
+mysql> -- 6. Test FOREIGN KEY on STUDENT3
+Query OK, 0 rows affected (0.004 sec)
+
+mysql> ALTER TABLE student3
+    -> ADD CONSTRAINT fk_student3_regno
+    -> FOREIGN KEY (RegNo) REFERENCES student2(RegNo);
+ERROR 1146 (42S02): Table 'csa0512.student3' doesn't exist
+mysql>
+mysql> -- EXPERIMENT 3: INSERT AND SELECT
+Query OK, 0 rows affected (0.012 sec)
+
+mysql>
+mysql> -- 1. Insert records into STUDENT
+Query OK, 0 rows affected (0.004 sec)
+
+mysql> INSERT INTO student
+    -> VALUES
+    -> (101, 'Mohan', 'M', 20040112, 998826973, 'MTR'),
+    -> (102, 'Raju', 'M', 20050213, 986865894, 'MGR'),
+    -> (103, 'Ramesh', 'M', 20050314, 998263548, 'MGR'),
+    -> (104, 'Ram', 'M', 20060514, 998262979, 'MGR'),
+    -> (105, 'Sam', 'M', 20070417, 998269245, 'MTR'),
+    -> (106, 'Siri', 'F', 20040112, 891938534, 'CHITTOOR');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql>
+mysql> SELECT * FROM student;
++------------+--------------+--------+------------+-------------------+------------+-----------+-----------------+----------------+-------------+-------+
+| Student_ID | Student_Name | Gender | DOB        | Email             | Phone      | Course_ID | Student_Address | Admission_Date | Blood_Group | Marks |
++------------+--------------+--------+------------+-------------------+------------+-----------+-----------------+----------------+-------------+-------+
+|        101 | Arun Kumar   | Male   | 2006-05-15 | arun@gmail.com    | 9876543210 |       201 | Chennai         | 2025-08-01     | NULL        |  NULL |
+|        102 | Priya Sharma | Female | 2006-08-20 | priya@gmail.com   | 9876543211 |       202 | Nellore         | 2025-08-02     | NULL        |  NULL |
+|        103 | Rahul Raj    | Male   | 2005-03-12 | rahul@gmail.com   | 9876543212 |       201 | Vellore         | 2025-08-03     | NULL        |  NULL |
+|        104 | Divya S      | Female | 2006-11-25 | divya@gmail.com   | 9876543213 |       203 | Chennai         | 2025-08-04     | NULL        |  NULL |
+|        105 | Karthik M    | Male   | 2005-07-08 | karthik@gmail.com | 9876543214 |       202 | Tirupati        | 2025-08-05     | NULL        |  NULL |
++------------+--------------+--------+------------+-------------------+------------+-----------+-----------------+----------------+-------------+-------+
+5 rows in set (0.201 sec)
+
+mysql>
+mysql>
+mysql> -- 2. Insert records into FACULTY
+Query OK, 0 rows affected (0.006 sec)
+
+mysql> INSERT INTO faculty
+    -> VALUES
+    -> (201, 'Mohan', 'M', 20040112, 20140523, 998826973, 'CSE'),
+    -> (202, 'Raju', 'M', 20050213, 20090625, 986865894, 'ECE'),
+    -> (203, 'Ramesh', 'M', 20050314, 20141220, 998263548, 'CSE');
+Query OK, 3 rows affected (0.038 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> SELECT * FROM faculty;
++-------+---------+--------+----------+----------+-----------+------+
+| FacNo | FacName | Gender | DOB      | MobileNo | DOJ       | Dept |
++-------+---------+--------+----------+----------+-----------+------+
+|   201 | Mohan   | M      | 20040112 | 20140523 | 998826973 | CSE  |
+|   202 | Raju    | M      | 20050213 | 20090625 | 986865894 | ECE  |
+|   203 | Ramesh  | M      | 20050314 | 20141220 | 998263548 | CSE  |
++-------+---------+--------+----------+----------+-----------+------+
+3 rows in set (0.005 sec)
+
+mysql>
+mysql>
+mysql> -- 3. Insert records into DEPARTMENT
+Query OK, 0 rows affected (0.003 sec)
+
+mysql> INSERT INTO department
+    -> VALUES
+    -> (1, 'CSE', 'Mohan'),
+    -> (2, 'ECE', 'Raju'),
+    -> (3, 'IT', 'Ramesh');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql>
+mysql> SELECT * FROM department;
++---------------+------------------------+------------+----------+------------+-----------+
+| Department_ID | Department_Name        | Head_Name  | Location | Phone      | Budget    |
++---------------+------------------------+------------+----------+------------+-----------+
+|           301 | Computer Science       | Dr. Kumar  | Block A  | 9876543210 | 500000.00 |
+|           302 | Information Technology | Dr. Priya  | Block B  | 9876543211 | 450000.00 |
+|           303 | Mechanical             | Dr. Ramesh | Block C  | 9876543212 | 400000.00 |
+|           304 | Civil                  | Dr. Suresh | Block D  | 9876543213 | 350000.00 |
+|           305 | Electrical             | Dr. Anitha | Block E  | 9876543214 | 420000.00 |
++---------------+------------------------+------------+----------+------------+-----------+
+5 rows in set (0.140 sec)
+
+mysql>
+mysql>
+mysql> -- 4. Insert records into COURSE
+Query OK, 0 rows affected (0.004 sec)
+
+mysql> INSERT INTO course
+    -> VALUES
+    -> (101, 'Computer Science', 'M', 1, 1001, 201),
+    -> (102, 'Mathematics', 'M', 2, 1002, 202),
+    -> (103, 'Physics', 'L', 1, 1003, 203);
+Query OK, 3 rows affected (0.181 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> SELECT * FROM course;
++-----------+------------------------+-----------------+-----------+---------------+-------------+
+| Course_ID | Course_Name            | Course_Duration | Fees      | Department_ID | Course_Type |
++-----------+------------------------+-----------------+-----------+---------------+-------------+
+|       101 | Computer Science       | M               |      1.00 |          1001 | 201         |
+|       102 | Mathematics            | M               |      2.00 |          1002 | 202         |
+|       103 | Physics                | L               |      1.00 |          1003 | 203         |
+|       201 | Computer Science       | 4 Years         | 150000.00 |           301 | Engineering |
+|       202 | Information Technology | 4 Years         | 140000.00 |           302 | Engineering |
+|       203 | Mechanical Engineering | 4 Years         | 130000.00 |           303 | Engineering |
+|       204 | Civil Engineering      | 4 Years         | 120000.00 |           304 | Engineering |
+|       205 | Electrical Engineering | 4 Years         | 135000.00 |           305 | Engineering |
++-----------+------------------------+-----------------+-----------+---------------+-------------+
+8 rows in set (0.005 sec)
+
+mysql>
+mysql> -- EXPERIMENT 4: UPDATE AND DELETE
+Query OK, 0 rows affected (0.008 sec)
+
+mysql>
+mysql> -- 1. Update student name whose Reg_no is 19221154
+Query OK, 0 rows affected (0.009 sec)
+
+mysql> UPDATE student
+    -> SET Name = 'ram'
+    -> WHERE Reg_no = 19221154;
+ERROR 1054 (42S22): Unknown column 'Reg_no' in 'where clause'
+mysql>
+mysql> SELECT * FROM student;
++------------+--------------+--------+------------+-------------------+------------+-----------+-----------------+----------------+-------------+-------+
+| Student_ID | Student_Name | Gender | DOB        | Email             | Phone      | Course_ID | Student_Address | Admission_Date | Blood_Group | Marks |
++------------+--------------+--------+------------+-------------------+------------+-----------+-----------------+----------------+-------------+-------+
+|        101 | Arun Kumar   | Male   | 2006-05-15 | arun@gmail.com    | 9876543210 |       201 | Chennai         | 2025-08-01     | NULL        |  NULL |
+|        102 | Priya Sharma | Female | 2006-08-20 | priya@gmail.com   | 9876543211 |       202 | Nellore         | 2025-08-02     | NULL        |  NULL |
+|        103 | Rahul Raj    | Male   | 2005-03-12 | rahul@gmail.com   | 9876543212 |       201 | Vellore         | 2025-08-03     | NULL        |  NULL |
+|        104 | Divya S      | Female | 2006-11-25 | divya@gmail.com   | 9876543213 |       203 | Chennai         | 2025-08-04     | NULL        |  NULL |
+|        105 | Karthik M    | Male   | 2005-07-08 | karthik@gmail.com | 9876543214 |       202 | Tirupati        | 2025-08-05     | NULL        |  NULL |
++------------+--------------+--------+------------+-------------------+------------+-----------+-----------------+----------------+-------------+-------+
+5 rows in set (0.006 sec)
+
+mysql>
+mysql>
+mysql> -- 2. Delete faculty who resigned
+Query OK, 0 rows affected (0.006 sec)
+
+mysql> DELETE FROM faculty
+    -> WHERE resigned = 'y';
+ERROR 1054 (42S22): Unknown column 'resigned' in 'where clause'
+mysql>
+mysql> SELECT * FROM faculty;
++-------+---------+--------+----------+----------+-----------+------+
+| FacNo | FacName | Gender | DOB      | MobileNo | DOJ       | Dept |
++-------+---------+--------+----------+----------+-----------+------+
+|   201 | Mohan   | M      | 20040112 | 20140523 | 998826973 | CSE  |
+|   202 | Raju    | M      | 20050213 | 20090625 | 986865894 | ECE  |
+|   203 | Ramesh  | M      | 20050314 | 20141220 | 998263548 | CSE  |
++-------+---------+--------+----------+----------+-----------+------+
+3 rows in set (0.004 sec)
+
+mysql>
+mysql>
+mysql> -- 3. Update age of faculty named Mohan to 59
+Query OK, 0 rows affected (0.005 sec)
+
+mysql> UPDATE faculty
+    -> SET age = 59
+    -> WHERE facname = 'mohan';
+ERROR 1054 (42S22): Unknown column 'age' in 'field list'
+mysql>
+mysql> SELECT * FROM faculty;
++-------+---------+--------+----------+----------+-----------+------+
+| FacNo | FacName | Gender | DOB      | MobileNo | DOJ       | Dept |
++-------+---------+--------+----------+----------+-----------+------+
+|   201 | Mohan   | M      | 20040112 | 20140523 | 998826973 | CSE  |
+|   202 | Raju    | M      | 20050213 | 20090625 | 986865894 | ECE  |
+|   203 | Ramesh  | M      | 20050314 | 20141220 | 998263548 | CSE  |
++-------+---------+--------+----------+----------+-----------+------+
+3 rows in set (0.004 sec)
+
+mysql>
+mysql>
+mysql> -- 4. Remove faculty whose age is over 65
+Query OK, 0 rows affected (0.005 sec)
+
+mysql> DELETE FROM faculty
+    -> WHERE age > 65;
+ERROR 1054 (42S22): Unknown column 'age' in 'where clause'
+mysql>
+mysql> SELECT * FROM faculty;
++-------+---------+--------+----------+----------+-----------+------+
+| FacNo | FacName | Gender | DOB      | MobileNo | DOJ       | Dept |
++-------+---------+--------+----------+----------+-----------+------+
+|   201 | Mohan   | M      | 20040112 | 20140523 | 998826973 | CSE  |
+|   202 | Raju    | M      | 20050213 | 20090625 | 986865894 | ECE  |
+|   203 | Ramesh  | M      | 20050314 | 20141220 | 998263548 | CSE  |
++-------+---------+--------+----------+----------+-----------+------+
+3 rows in set (0.004 sec)
+
+mysql>
+mysql> -- EXPERIMENT 5: WHERE AND LIKE
+Query OK, 0 rows affected (0.007 sec)
+
+mysql>
+mysql> -- WHERE 1: Display Reg_no, Name and DOB
+Query OK, 0 rows affected (0.006 sec)
+
+mysql> SELECT Reg_no, Name, DOB
+    -> FROM student;
+ERROR 1054 (42S22): Unknown column 'Reg_no' in 'field list'
+mysql>
+mysql>
+mysql> -- WHERE 2: Display female students
+Query OK, 0 rows affected (0.007 sec)
+
+mysql> SELECT *
+    -> FROM student
+    -> WHERE Gender = 'f';
+Empty set (0.009 sec)
+
+mysql>
+mysql>
+mysql> -- WHERE 3: Students registered for course C001
+Query OK, 0 rows affected (0.005 sec)
+
+mysql> SELECT *
+    -> FROM student
+    -> WHERE courseno = 'C001';
+ERROR 1054 (42S22): Unknown column 'courseno' in 'where clause'
+mysql>
+mysql>
+mysql> -- WHERE 4: Faculty joined before November 2014
+Query OK, 0 rows affected (0.004 sec)
+
+mysql> SELECT *
+    -> FROM faculty
+    -> WHERE DOJ < '2014-11-01';
+Empty set, 1 warning (0.041 sec)
+
+mysql>
+mysql>
+mysql> -- WHERE 5: Courses not allotted to hall H001
+Query OK, 0 rows affected (0.005 sec)
+
+mysql> SELECT *
+    -> FROM course
+    -> WHERE HallNo <> 'H001';
+ERROR 1054 (42S22): Unknown column 'HallNo' in 'where clause'
+mysql>
+mysql>
+mysql> -- LIKE 6: Student names ending with 'sh'
+Query OK, 0 rows affected (0.006 sec)
+
+mysql> SELECT *
+    -> FROM student
+    -> WHERE Name LIKE '%sh';
+ERROR 1054 (42S22): Unknown column 'Name' in 'where clause'
+mysql>
+mysql>
+mysql> -- LIKE 7: Student names containing 'sh'
+Query OK, 0 rows affected (0.012 sec)
+
+mysql> SELECT *
+    -> FROM student
+    -> WHERE Name LIKE '%sh%';
+ERROR 1054 (42S22): Unknown column 'Name' in 'where clause'
+mysql>
+mysql>
+mysql> -- LIKE 8: Students in cities containing 'Sal'
+Query OK, 0 rows affected (0.005 sec)
+
+mysql> SELECT *
+    -> FROM student
+    -> WHERE City LIKE '%Sal%';
+ERROR 1054 (42S22): Unknown column 'City' in 'where clause'
+mysql>
+mysql>
+mysql> -- LIKE 9: Names that do not contain exactly six characters
+Query OK, 0 rows affected (0.006 sec)
+
+mysql> SELECT *
+    -> FROM student
+    -> WHERE Name NOT LIKE '______';
+ERROR 1054 (42S22): Unknown column 'Name' in 'where clause'
+mysql>
+mysql>
+mysql> -- LIKE 10: Student names containing 'am'
+Query OK, 0 rows affected (0.007 sec)
+
+mysql> SELECT *
+    -> FROM student
+    -> WHERE Name LIKE '%am%';
+ERROR 1054 (42S22): Unknown column 'Name' in 'where clause'
+mysql> DESC student;
++-----------------+--------------+------+-----+---------+-------+
+| Field           | Type         | Null | Key | Default | Extra |
++-----------------+--------------+------+-----+---------+-------+
+| Student_ID      | int          | NO   | PRI | NULL    |       |
+| Student_Name    | varchar(100) | NO   |     | NULL    |       |
+| Gender          | varchar(10)  | YES  |     | NULL    |       |
+| DOB             | date         | YES  |     | NULL    |       |
+| Email           | varchar(100) | YES  | UNI | NULL    |       |
+| Phone           | varchar(20)  | YES  |     | NULL    |       |
+| Course_ID       | int          | YES  |     | NULL    |       |
+| Student_Address | varchar(150) | YES  |     | NULL    |       |
+| Admission_Date  | date         | YES  |     | NULL    |       |
+| Blood_Group     | varchar(5)   | YES  |     | NULL    |       |
+| Marks           | int          | YES  |     | NULL    |       |
++-----------------+--------------+------+-----+---------+-------+
+11 rows in set (0.050 sec)
+
+mysql> DESC course;
++-----------------+---------------+------+-----+---------+-------+
+| Field           | Type          | Null | Key | Default | Extra |
++-----------------+---------------+------+-----+---------+-------+
+| Course_ID       | int           | NO   | PRI | NULL    |       |
+| Course_Name     | varchar(100)  | NO   |     | NULL    |       |
+| Course_Duration | varchar(30)   | YES  |     | NULL    |       |
+| Fees            | decimal(10,2) | YES  |     | NULL    |       |
+| Department_ID   | int           | YES  |     | NULL    |       |
+| Course_Type     | varchar(50)   | YES  |     | NULL    |       |
++-----------------+---------------+------+-----+---------+-------+
+6 rows in set (0.026 sec)
+
+mysql> DESC faculty;
++----------+----------+------+-----+---------+-------+
+| Field    | Type     | Null | Key | Default | Extra |
++----------+----------+------+-----+---------+-------+
+| FacNo    | int      | NO   | PRI | NULL    |       |
+| FacName  | char(15) | YES  |     | NULL    |       |
+| Gender   | char(1)  | YES  |     | NULL    |       |
+| DOB      | int      | YES  |     | NULL    |       |
+| MobileNo | int      | YES  |     | NULL    |       |
+| DOJ      | int      | YES  |     | NULL    |       |
+| Dept     | char(10) | YES  |     | NULL    |       |
++----------+----------+------+-----+---------+-------+
+7 rows in set (0.034 sec)
+
+mysql>
+mysql> -- 1. Display student ID, name and DOB
+Query OK, 0 rows affected (0.006 sec)
+
+mysql> SELECT Student_ID, Student_Name, DOB
+    -> FROM student;
++------------+--------------+------------+
+| Student_ID | Student_Name | DOB        |
++------------+--------------+------------+
+|        101 | Arun Kumar   | 2006-05-15 |
+|        102 | Priya Sharma | 2006-08-20 |
+|        103 | Rahul Raj    | 2005-03-12 |
+|        104 | Divya S      | 2006-11-25 |
+|        105 | Karthik M    | 2005-07-08 |
++------------+--------------+------------+
+5 rows in set (0.008 sec)
+
+mysql>
+mysql> -- 2. Display female students
+Query OK, 0 rows affected (0.004 sec)
+
+mysql> SELECT *
+    -> FROM student
+    -> WHERE Gender = 'F';
+Empty set (0.005 sec)
+
+mysql>
+mysql> -- 3. Students registered for course C001
+Query OK, 0 rows affected (0.003 sec)
+
+mysql> SELECT *
+    -> FROM student
+    -> WHERE Course_ID = 1;
+Empty set (0.007 sec)
+
+mysql>
+mysql> -- 4. Faculty joined before November 2014
+Query OK, 0 rows affected (0.007 sec)
+
+mysql> SELECT *
+    -> FROM faculty
+    -> WHERE DOJ < 20141101;
+Empty set (0.006 sec)
+
+mysql>
+mysql> -- 5. Courses not allotted to hall H001
+Query OK, 0 rows affected (0.003 sec)
+
+mysql> -- Your course table has no HallNo column.
+Query OK, 0 rows affected (0.002 sec)
+
+mysql> -- Display available course details instead:
+Query OK, 0 rows affected (0.002 sec)
+
+mysql> SELECT *
+    -> FROM course;
++-----------+------------------------+-----------------+-----------+---------------+-------------+
+| Course_ID | Course_Name            | Course_Duration | Fees      | Department_ID | Course_Type |
++-----------+------------------------+-----------------+-----------+---------------+-------------+
+|       101 | Computer Science       | M               |      1.00 |          1001 | 201         |
+|       102 | Mathematics            | M               |      2.00 |          1002 | 202         |
+|       103 | Physics                | L               |      1.00 |          1003 | 203         |
+|       201 | Computer Science       | 4 Years         | 150000.00 |           301 | Engineering |
+|       202 | Information Technology | 4 Years         | 140000.00 |           302 | Engineering |
+|       203 | Mechanical Engineering | 4 Years         | 130000.00 |           303 | Engineering |
+|       204 | Civil Engineering      | 4 Years         | 120000.00 |           304 | Engineering |
+|       205 | Electrical Engineering | 4 Years         | 135000.00 |           305 | Engineering |
++-----------+------------------------+-----------------+-----------+---------------+-------------+
+8 rows in set (0.004 sec)
+
+mysql>
+mysql> -- 6. Student names ending with 'sh'
+Query OK, 0 rows affected (0.005 sec)
+
+mysql> SELECT *
+    -> FROM student
+    -> WHERE Student_Name LIKE '%sh';
+Empty set (0.032 sec)
+
+mysql>
+mysql> -- 7. Student names containing 'sh'
+Query OK, 0 rows affected (0.003 sec)
+
+mysql> SELECT *
+    -> FROM student
+    -> WHERE Student_Name LIKE '%sh%';
++------------+--------------+--------+------------+-----------------+------------+-----------+-----------------+----------------+-------------+-------+
+| Student_ID | Student_Name | Gender | DOB        | Email           | Phone      | Course_ID | Student_Address | Admission_Date | Blood_Group | Marks |
++------------+--------------+--------+------------+-----------------+------------+-----------+-----------------+----------------+-------------+-------+
+|        102 | Priya Sharma | Female | 2006-08-20 | priya@gmail.com | 9876543211 |       202 | Nellore         | 2025-08-02     | NULL        |  NULL |
++------------+--------------+--------+------------+-----------------+------------+-----------+-----------------+----------------+-------------+-------+
+1 row in set (0.005 sec)
+
+mysql>
+mysql> -- 8. Students whose address contains 'Sal'
+Query OK, 0 rows affected (0.004 sec)
+
+mysql> SELECT *
+    -> FROM student
+    -> WHERE Student_Address LIKE '%Sal%';
+Empty set (0.006 sec)
+
+mysql>
+mysql> -- 9. Names that do not contain exactly six characters
+Query OK, 0 rows affected (0.003 sec)
+
+mysql> SELECT *
+    -> FROM student
+    -> WHERE Student_Name NOT LIKE '______';
++------------+--------------+--------+------------+-------------------+------------+-----------+-----------------+----------------+-------------+-------+
+| Student_ID | Student_Name | Gender | DOB        | Email             | Phone      | Course_ID | Student_Address | Admission_Date | Blood_Group | Marks |
++------------+--------------+--------+------------+-------------------+------------+-----------+-----------------+----------------+-------------+-------+
+|        101 | Arun Kumar   | Male   | 2006-05-15 | arun@gmail.com    | 9876543210 |       201 | Chennai         | 2025-08-01     | NULL        |  NULL |
+|        102 | Priya Sharma | Female | 2006-08-20 | priya@gmail.com   | 9876543211 |       202 | Nellore         | 2025-08-02     | NULL        |  NULL |
+|        103 | Rahul Raj    | Male   | 2005-03-12 | rahul@gmail.com   | 9876543212 |       201 | Vellore         | 2025-08-03     | NULL        |  NULL |
+|        104 | Divya S      | Female | 2006-11-25 | divya@gmail.com   | 9876543213 |       203 | Chennai         | 2025-08-04     | NULL        |  NULL |
+|        105 | Karthik M    | Male   | 2005-07-08 | karthik@gmail.com | 9876543214 |       202 | Tirupati        | 2025-08-05     | NULL        |  NULL |
++------------+--------------+--------+------------+-------------------+------------+-----------+-----------------+----------------+-------------+-------+
+5 rows in set (0.008 sec)
+
+mysql>
+mysql> -- 10. Student names containing 'am'
+Query OK, 0 rows affected (0.003 sec)
+
+mysql> SELECT *
+    -> FROM student
+    -> WHERE Student_Name LIKE '%am%';
+Empty set (0.008 sec)
+
+mysql>
+mysql> -- IN & BETWEEN
+Query OK, 0 rows affected (0.011 sec)
+
+mysql>
+mysql> -- 1. List course types for Statistics and Programming
+Query OK, 0 rows affected (0.004 sec)
+
+mysql> SELECT Course_Type
+    -> FROM course
+    -> WHERE Course_Name IN ('Statistics', 'Programming');
+Empty set (0.008 sec)
+
+mysql>
+mysql> -- 2. Course IDs with marks between 50 and 80
+Query OK, 0 rows affected (0.004 sec)
+
+mysql> SELECT DISTINCT Course_ID
+    -> FROM student
+    -> WHERE Marks BETWEEN 50 AND 80;
+Empty set (0.051 sec)
+
+mysql>
+mysql>
+mysql> -- AGGREGATE FUNCTIONS
+Query OK, 0 rows affected (0.004 sec)
+
+mysql>
+mysql> -- 1. Average marks for course C002 (if Course_ID is numeric, use 2)
+Query OK, 0 rows affected (0.004 sec)
+
+mysql> SELECT AVG(Marks)
+    -> FROM student
+    -> WHERE Course_ID = 2;
++------------+
+| AVG(Marks) |
++------------+
+|       NULL |
++------------+
+1 row in set (0.028 sec)
+
+mysql>
+mysql> -- 2. Maximum and minimum marks for course C002
+Query OK, 0 rows affected (0.005 sec)
+
+mysql> SELECT MAX(Marks), MIN(Marks)
+    -> FROM student
+    -> WHERE Course_ID = 2;
++------------+------------+
+| MAX(Marks) | MIN(Marks) |
++------------+------------+
+|       NULL |       NULL |
++------------+------------+
+1 row in set (0.017 sec)
+
+mysql>
+mysql> -- 3. Maximum, minimum and average marks for each course
+Query OK, 0 rows affected (0.005 sec)
+
+mysql> SELECT Course_ID, MAX(Marks), MIN(Marks), AVG(Marks)
+    -> FROM student
+    -> GROUP BY Course_ID;
++-----------+------------+------------+------------+
+| Course_ID | MAX(Marks) | MIN(Marks) | AVG(Marks) |
++-----------+------------+------------+------------+
+|       201 |       NULL |       NULL |       NULL |
+|       202 |       NULL |       NULL |       NULL |
+|       203 |       NULL |       NULL |       NULL |
++-----------+------------+------------+------------+
+3 rows in set (0.025 sec)
+
+mysql>
+mysql> -- 4. Course names and average marks
+Query OK, 0 rows affected (0.005 sec)
+
+mysql> SELECT c.Course_Name, AVG(s.Marks)
+    -> FROM course c
+    -> JOIN student s ON c.Course_ID = s.Course_ID
+    -> GROUP BY c.Course_ID, c.Course_Name;
++------------------------+--------------+
+| Course_Name            | AVG(s.Marks) |
++------------------------+--------------+
+| Computer Science       |         NULL |
+| Information Technology |         NULL |
+| Mechanical Engineering |         NULL |
++------------------------+--------------+
+3 rows in set (0.015 sec)
+
+mysql>
+mysql> -- 5. Sum of all marks
+Query OK, 0 rows affected (0.003 sec)
+
+mysql> SELECT SUM(Marks)
+    -> FROM student;
++------------+
+| SUM(Marks) |
++------------+
+|       NULL |
++------------+
+1 row in set (0.007 sec)
+
+mysql>
+mysql> -- 6. Number of students registered for each course
+Query OK, 0 rows affected (0.005 sec)
+
+mysql> SELECT c.Course_Name, COUNT(s.Student_ID)
+    -> FROM course c
+    -> LEFT JOIN student s ON c.Course_ID = s.Course_ID
+    -> GROUP BY c.Course_ID, c.Course_Name;
++------------------------+---------------------+
+| Course_Name            | COUNT(s.Student_ID) |
++------------------------+---------------------+
+| Computer Science       |                   0 |
+| Mathematics            |                   0 |
+| Physics                |                   0 |
+| Computer Science       |                   2 |
+| Information Technology |                   2 |
+| Mechanical Engineering |                   1 |
+| Civil Engineering      |                   0 |
+| Electrical Engineering |                   0 |
++------------------------+---------------------+
+8 rows in set (0.012 sec)
+
+mysql>
+mysql> -- 7. Number of courses registered by each student
+Query OK, 0 rows affected (0.004 sec)
+
+mysql> SELECT Student_ID, COUNT(DISTINCT Course_ID)
+    -> FROM student
+    -> GROUP BY Student_ID;
++------------+---------------------------+
+| Student_ID | COUNT(DISTINCT Course_ID) |
++------------+---------------------------+
+|        101 |                         1 |
+|        102 |                         1 |
+|        103 |                         1 |
+|        104 |                         1 |
+|        105 |                         1 |
++------------+---------------------------+
+5 rows in set (0.014 sec)
+
+mysql>
+mysql> -- EXPERIMENT 7: GROUP BY, HAVING, ORDER BY
+Query OK, 0 rows affected (0.016 sec)
+
+mysql>
+mysql> -- 1. Count students registered for each course
+Query OK, 0 rows affected (0.005 sec)
+
+mysql> SELECT c.Course_Name, COUNT(s.Student_ID) AS Total_Students
+    -> FROM course c
+    -> LEFT JOIN student s ON c.Course_ID = s.Course_ID
+    -> GROUP BY c.Course_ID, c.Course_Name;
++------------------------+----------------+
+| Course_Name            | Total_Students |
++------------------------+----------------+
+| Computer Science       |              0 |
+| Mathematics            |              0 |
+| Physics                |              0 |
+| Computer Science       |              2 |
+| Information Technology |              2 |
+| Mechanical Engineering |              1 |
+| Civil Engineering      |              0 |
+| Electrical Engineering |              0 |
++------------------------+----------------+
+8 rows in set (0.010 sec)
+
+mysql>
+mysql>
+mysql> -- 2. Count courses registered by each student
+Query OK, 0 rows affected (0.005 sec)
+
+mysql> SELECT Student_ID, COUNT(DISTINCT Course_ID) AS Total_Courses
+    -> FROM student
+    -> GROUP BY Student_ID;
++------------+---------------+
+| Student_ID | Total_Courses |
++------------+---------------+
+|        101 |             1 |
+|        102 |             1 |
+|        103 |             1 |
+|        104 |             1 |
+|        105 |             1 |
++------------+---------------+
+5 rows in set (0.011 sec)
+
+mysql>
+mysql>
+mysql> -- 3. Display student name, gender and phone
+Query OK, 0 rows affected (0.005 sec)
+
+mysql> -- in ascending order of Student_ID
+Query OK, 0 rows affected (0.003 sec)
+
+mysql> SELECT Student_Name, Gender, Phone
+    -> FROM student
+    -> ORDER BY Student_ID ASC;
++--------------+--------+------------+
+| Student_Name | Gender | Phone      |
++--------------+--------+------------+
+| Arun Kumar   | Male   | 9876543210 |
+| Priya Sharma | Female | 9876543211 |
+| Rahul Raj    | Male   | 9876543212 |
+| Divya S      | Female | 9876543213 |
+| Karthik M    | Male   | 9876543214 |
++--------------+--------+------------+
+5 rows in set (0.008 sec)
+
+mysql>
+mysql>
+mysql> -- 4. List faculty members, oldest first
+Query OK, 0 rows affected (0.004 sec)
+
+mysql> SELECT *
+    -> FROM faculty
+    -> ORDER BY DOB ASC;
++-------+---------+--------+----------+----------+-----------+------+
+| FacNo | FacName | Gender | DOB      | MobileNo | DOJ       | Dept |
++-------+---------+--------+----------+----------+-----------+------+
+|   201 | Mohan   | M      | 20040112 | 20140523 | 998826973 | CSE  |
+|   202 | Raju    | M      | 20050213 | 20090625 | 986865894 | ECE  |
+|   203 | Ramesh  | M      | 20050314 | 20141220 | 998263548 | CSE  |
++-------+---------+--------+----------+----------+-----------+------+
+3 rows in set (0.011 sec)
+
+mysql>
+mysql> -- 1. Students whose marks are greater than average marks
+Query OK, 0 rows affected (0.007 sec)
+
+mysql> SELECT Student_ID, Student_Name, Marks
+    -> FROM student
+    -> WHERE Marks > (
+    ->     SELECT AVG(Marks)
+    ->     FROM student
+    -> );
+Empty set (0.037 sec)
+
+mysql>
+mysql>
+mysql> -- 2. Students registered for more than one course
+Query OK, 0 rows affected (0.009 sec)
+
+mysql> -- This works if each student has multiple rows for different courses.
+Query OK, 0 rows affected (0.007 sec)
+
+mysql> SELECT Student_ID, Student_Name
+    -> FROM student
+    -> GROUP BY Student_ID, Student_Name
+    -> HAVING COUNT(DISTINCT Course_ID) > 1;
+Empty set (0.011 sec)
+
+mysql>
+mysql>
+mysql> -- 3. Faculty member who joined most recently
+Query OK, 0 rows affected (0.005 sec)
+
+mysql> SELECT FacNo, FacName, DOJ
+    -> FROM faculty
+    -> WHERE DOJ = (
+    ->     SELECT MAX(DOJ)
+    ->     FROM faculty
+    -> );
++-------+---------+-----------+
+| FacNo | FacName | DOJ       |
++-------+---------+-----------+
+|   201 | Mohan   | 998826973 |
++-------+---------+-----------+
+1 row in set (0.025 sec)
+
+mysql>
+mysql>
+mysql> -- 4. Course and marks greater than the average marks
+Query OK, 0 rows affected (0.007 sec)
+
+mysql> -- for that course
+Query OK, 0 rows affected (0.007 sec)
+
+mysql> SELECT c.Course_Name, s.Student_ID, s.Marks
+    -> FROM student s
+    -> JOIN course c ON c.Course_ID = s.Course_ID
+    -> WHERE s.Marks > (
+    ->     SELECT AVG(s2.Marks)
+    ->     FROM student s2
+    ->     WHERE s2.Course_ID = s.Course_ID
+    -> );
+Empty set (0.015 sec)
+
+mysql>
+mysql> -- 1. List departments where faculty members are working
+Query OK, 0 rows affected (0.008 sec)
+
+mysql> SELECT f.FacName, d.DeptName
+    -> FROM faculty f
+    -> INNER JOIN department d
+    -> ON f.Dept = d.DeptName;
+ERROR 1054 (42S22): Unknown column 'd.DeptName' in 'field list'
+mysql>
+mysql>
+mysql> -- 2. Find students who have no score in any course
+Query OK, 0 rows affected (0.010 sec)
+
+mysql> SELECT s.Student_Name, s.Course_ID
+    -> FROM student s
+    -> LEFT JOIN course c
+    -> ON s.Course_ID = c.Course_ID
+    -> WHERE s.Marks IS NULL;
++--------------+-----------+
+| Student_Name | Course_ID |
++--------------+-----------+
+| Arun Kumar   |       201 |
+| Priya Sharma |       202 |
+| Rahul Raj    |       201 |
+| Divya S      |       203 |
+| Karthik M    |       202 |
++--------------+-----------+
+5 rows in set (0.016 sec)
+
+mysql>
+mysql>
+mysql> -- 3. Display courses taken by faculty named Kamal
+Query OK, 0 rows affected (0.009 sec)
+
+mysql> -- belonging to ECE department
+Query OK, 0 rows affected (0.009 sec)
+
+mysql> -- This requires a faculty-to-course mapping column/table.
+Query OK, 0 rows affected (0.018 sec)
+
+mysql>
+mysql> -- EXPERIMENT 10: VIEW AND INDEX
+Query OK, 0 rows affected (0.010 sec)
+
+mysql>
+mysql> -- QUESTION 1: Create view v1
+Query OK, 0 rows affected (0.011 sec)
+
+mysql> CREATE VIEW v1 AS
+    -> SELECT employee_id, salary
+    -> FROM employees1;
+ERROR 1146 (42S02): Table 'csa0512.employees1' doesn't exist
+mysql>
+mysql> DESC v1;
+ERROR 1146 (42S02): Table 'csa0512.v1' doesn't exist
+mysql>
+mysql> SELECT * FROM v1;
+ERROR 1146 (42S02): Table 'csa0512.v1' doesn't exist
+mysql>
+mysql>
+mysql> -- QUESTION 2: Insert and delete records from v1
+Query OK, 0 rows affected (0.008 sec)
+
+mysql> INSERT INTO v1 (employee_id, salary)
+    -> VALUES (101, 100001);
+ERROR 1146 (42S02): Table 'csa0512.v1' doesn't exist
+mysql>
+mysql> SELECT * FROM v1;
+ERROR 1146 (42S02): Table 'csa0512.v1' doesn't exist
+mysql>
+mysql> DELETE FROM v1
+    -> WHERE employee_id = 10;
+ERROR 1146 (42S02): Table 'csa0512.v1' doesn't exist
+mysql>
+mysql> SELECT * FROM v1;
+ERROR 1146 (42S02): Table 'csa0512.v1' doesn't exist
+mysql>
+mysql>
+mysql> -- INDEX QUESTION 1: Create index on salary
+Query OK, 0 rows affected (0.007 sec)
+
+mysql> CREATE INDEX index1
+    -> ON employees1 (salary);
+ERROR 1146 (42S02): Table 'csa0512.employees1' doesn't exist
+mysql>
+mysql> -- Find employees with salary above 145000
+Query OK, 0 rows affected (0.020 sec)
+
+mysql> SELECT first_name
+    -> FROM employees1
+    -> WHERE salary > 145000;
+ERROR 1146 (42S02): Table 'csa0512.employees1' doesn't exist
+mysql>
+mysql> -- Check query execution plan
+Query OK, 0 rows affected (0.007 sec)
+
+mysql> EXPLAIN
+    -> SELECT first_name
+    -> FROM employees1
+    -> WHERE salary > 145000;
+ERROR 1146 (42S02): Table 'csa0512.employees1' doesn't exist
+mysql>
+mysql> -- Drop index
+Query OK, 0 rows affected (0.011 sec)
+
+mysql> DROP INDEX index1 ON employees1;
+ERROR 1146 (42S02): Table 'csa0512.employees1' doesn't exist
+mysql>
+mysql>
+mysql> -- INDEX QUESTION 2: Create index on employee_id
+Query OK, 0 rows affected (0.007 sec)
+
+mysql> CREATE INDEX index1
+    -> ON employees1 (employee_id);
+ERROR 1146 (42S02): Table 'csa0512.employees1' doesn't exist
+mysql>
+mysql> -- Find employee whose ID is 10
+Query OK, 0 rows affected (0.008 sec)
+
+mysql> SELECT first_name
+    -> FROM employees1
+    -> WHERE employee_id = 10;
+ERROR 1146 (42S02): Table 'csa0512.employees1' doesn't exist
+mysql>
+mysql> -- Check query execution plan
+Query OK, 0 rows affected (0.007 sec)
+
+mysql> EXPLAIN
+    -> SELECT first_name
+    -> FROM employees1
+    -> WHERE employee_id = 10;
+ERROR 1146 (42S02): Table 'csa0512.employees1' doesn't exist
+mysql>
